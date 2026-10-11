@@ -1,7 +1,8 @@
 name: pages
 
 # Deploys web/ (plus libraries/ copied in) to GitHub Pages.
-# One-time setup: repository Settings → Pages → Source: "GitHub Actions".
+# The configure-pages step tries to enable Pages itself (enablement: true).
+# If that is refused, do it once by hand: Settings → Pages → Source: "GitHub Actions".
 
 on:
   push:
@@ -25,7 +26,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Assemble site
         run: |
           mkdir -p _site/libraries
@@ -35,6 +36,8 @@ jobs:
           echo "digico-knowledge $(git rev-parse --short HEAD) $(date -u +%Y-%m-%dT%H:%MZ)" > _site/build.txt
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
