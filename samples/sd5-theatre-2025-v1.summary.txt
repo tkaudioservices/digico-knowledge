@@ -1,0 +1,441 @@
+Session       : 'Session'   console SD5   format vK   11,751,214 bytes   sample rate 48000   [names scrubbed]
+Last saved    : 2025-11-29 22:33:12   (newest component timestamp)
+Objects       : 1348 live objects, 11780 snapshot components, 45 snapshots, 150 presets, 34 fader banks, 64 macros
+Object kinds  : 100 input, 36 aux, 17 group, 41 bus leg (R/C of stereo/LCR bus), 1 monitoring, 3 talkback, 20 control group, 2 solo, 1 talkback in, 10 fx unit, 24 matrix in, 24 matrix out, 32 graphic eq, 1 kind 18 (?), 520 input port, 516 output port
+
+INPUT CHANNELS (fader/mute/HPF/LPF/patch raw/active sends)
+    1 IN 01                mono        0.0 dB  MUTE  hpf   136  lpf     -  patch input port35:5 IN35 05/input port29:3 IN29 03  sends 9
+    2 IN 02                mono        0.0 dB  MUTE  hpf   118  lpf     -  patch input port35:6 IN35 06/input port29:4 IN29 04  sends 8
+    3 IN 03                stereo     0.52 dB        hpf     -  lpf     -  patch fx unit14:3 FX 03/-  sends 12
+    4 IN 04                mono      -0.69 dB  MUTE  hpf   116  lpf     -  patch input port35:7 IN35 07/input port29:5 IN29 05  sends 8
+    5 IN 05                mono      -0.42 dB  MUTE  hpf   122  lpf     -  patch input port35:8 IN35 08/input port29:6 IN29 06  sends 9
+    6 IN 06                mono      -0.83 dB  MUTE  hpf   113  lpf     -  patch input port35:1 IN35 01/input port29:7 IN29 07  sends 8
+    7 IN 07                mono      -0.28 dB  MUTE  hpf    77  lpf     -  patch input port35:1 IN35 01/input port29:7 IN29 07  sends 7
+    8 IN 08                mono      -0.14 dB        hpf   107  lpf     -  patch input port29:8 IN29 08/-  sends 8
+    9 IN 09                mono        0.0 dB  MUTE  hpf    77  lpf     -  patch input port35:5 IN35 05/input port29:3 IN29 03  sends 7
+   10 IN 10                mono      -0.42 dB  MUTE  hpf    77  lpf     -  patch input port35:6 IN35 06/input port29:4 IN29 04  sends 6
+   11 IN 11                stereo   -15.67 dB  MUTE  hpf     -  lpf     -  patch input port29:1 IN29 01/-  sends 4
+   12 IN 12                mono        0.0 dB  MUTE  hpf    77  lpf     -  patch input port35:7 IN35 07/input port29:5 IN29 05  sends 8
+   13 IN 13                mono        0.0 dB  MUTE  hpf    54  lpf     -  patch input port35:8 IN35 08/input port29:6 IN29 06  sends 7
+   14 IN 14                mono      -0.42 dB        hpf     -  lpf     -  patch input port29:38 IN29 38/-  sends 0
+   15 IN 15                mono       0.35 dB        hpf     -  lpf     -  patch input port29:37 IN29 37/-  sends 0
+   16 IN 16                mono      -1.94 dB        hpf     -  lpf     -  patch input port31:54 IN31 54/-  sends 0
+   17 IN 17                mono        0.0 dB  MUTE  hpf     -  lpf 22433  patch input port33:1 IN33 01/-  sends 12
+   18 IN 18                mono      -2.08 dB  MUTE  hpf    47  lpf     -  patch input port33:2 IN33 02/-  sends 12
+   19 IN 19                mono      -1.11 dB  MUTE  hpf   107  lpf     -  patch input port33:3 IN33 03/-  sends 11
+   20 IN 20                mono      -5.67 dB  MUTE  hpf    16  lpf     -  patch input port33:4 IN33 04/-  sends 12
+   21 IN 21                stereo    -3.89 dB  MUTE  hpf    34  lpf     -  patch input port33:5 IN33 05/-  sends 12
+   22 IN 22                stereo      0.0 dB  MUTE  hpf   142  lpf     -  patch input port33:7 IN33 07/-  sends 12
+   23 IN 23                stereo   -150.0 dB        hpf    32  lpf 14543  patch input port33:15 IN33 15/-  sends 5
+   24 IN 24                mono     -150.0 dB        hpf     -  lpf     -  patch input port31:53 IN31 53/-  sends 0
+   25 IN 25                mono      -2.22 dB  MUTE  hpf    21  lpf     -  patch input port35:9 IN35 09/-  sends 11
+   26 IN 26                mono     -150.0 dB        hpf     -  lpf     -  patch input port31:42 IN31 42/-  sends 0
+   27 IN 27                mono      -4.86 dB  MUTE  hpf    73  lpf     -  patch input port35:10 IN35 10/input port33:10 IN33 10  sends 11
+   28 IN 28                mono     -150.0 dB        hpf     -  lpf     -  patch input port31:41 IN31 41/-  sends 0
+   29 IN 29                stereo     -2.5 dB  MUTE  hpf    27  lpf     -  patch input port33:11 IN33 11/-  sends 11
+   30 IN 30                mono       4.83 dB  MUTE  hpf   122  lpf 25000  patch input port35:14 IN35 14/-  sends 11
+   31 IN 31                stereo   -150.0 dB        hpf    74  lpf     -  patch input port33:13 IN33 13/-  sends 10
+   32 IN 32                mono      -0.97 dB  MUTE  hpf   132  lpf     -  patch input port35:11 IN35 11/-  sends 13
+   33 IN 33                mono       -5.0 dB  MUTE  hpf    48  lpf 14154  patch input port35:12 IN35 12/-  sends 13
+   34 IN 34                mono        0.0 dB  MUTE  hpf    57  lpf 17109  patch input port35:13 IN35 13/-  sends 13
+   35 IN 35                mono     -49.44 dB  MUTE  hpf   136  lpf 12031  patch -/-  sends 13
+   36 IN 36                mono     -150.0 dB        hpf     -  lpf     -  patch input port29:41 IN29 41/-  sends 4
+   37 IN 37                stereo     1.21 dB  MUTE  hpf     -  lpf     -  patch input port29:9 IN29 09/-  sends 14
+   38 IN 38                stereo      0.0 dB  MUTE  hpf     -  lpf     -  patch input port29:11 IN29 11/-  sends 14
+   39 IN 39                stereo      0.0 dB        hpf     -  lpf     -  patch input port29:13 IN29 13/-  sends 13
+   40 IN 40                stereo    -0.42 dB  MUTE  hpf     -  lpf     -  patch input port29:15 IN29 15/-  sends 12
+   41 IN 41                stereo    -1.39 dB        hpf     -  lpf     -  patch input port29:17 IN29 17/-  sends 13
+   42 IN 42                stereo     0.52 dB        hpf     -  lpf     -  patch input port29:19 IN29 19/-  sends 12
+   43 IN 43                stereo     1.21 dB        hpf     -  lpf     -  patch input port29:21 IN29 21/-  sends 12
+   44 IN 44                stereo     0.69 dB        hpf     -  lpf     -  patch input port29:23 IN29 23/-  sends 13
+   45 IN 45                stereo     0.52 dB        hpf     -  lpf     -  patch input port29:25 IN29 25/-  sends 12
+   46 IN 46                stereo    -0.14 dB  MUTE  hpf     -  lpf     -  patch input port29:27 IN29 27/-  sends 12
+   47 IN 47                mono     -150.0 dB        hpf     -  lpf     -  patch input port29:42 IN29 42/-  sends 4
+   48 IN 48                mono      -0.83 dB  MUTE  hpf    84  lpf     -  patch fx unit14:8 FX 08/-  sends 10
+   49 IN 49                mono      -0.28 dB        hpf     -  lpf     -  patch input port29:29 IN29 29/-  sends 9
+   50 IN 50                mono      -0.69 dB        hpf     -  lpf     -  patch input port29:30 IN29 30/-  sends 9
+   51 IN 51                mono      -0.42 dB        hpf     -  lpf     -  patch input port29:31 IN29 31/-  sends 4
+   52 IN 52                mono       0.18 dB        hpf     -  lpf     -  patch input port29:32 IN29 32/-  sends 0
+   53 IN 53                mono      -0.14 dB        hpf     -  lpf     -  patch input port29:33 IN29 33/-  sends 0
+   54 IN 54                mono        0.0 dB        hpf     -  lpf     -  patch input port29:34 IN29 34/-  sends 2
+   55 IN 55                mono      -0.28 dB        hpf     -  lpf     -  patch input port29:35 IN29 35/-  sends 0
+   56 IN 56                mono       0.35 dB        hpf     -  lpf     -  patch input port29:36 IN29 36/-  sends 0
+   57 IN 57                stereo     0.52 dB        hpf     -  lpf     -  patch fx unit14:1 FX 01/-  sends 12
+   58 IN 58                stereo     0.69 dB        hpf     -  lpf     -  patch fx unit14:2 FX 02/-  sends 12
+   59 IN 59                mono     -150.0 dB        hpf     -  lpf     -  patch input port31:40 IN31 40/-  sends 0
+   60 IN 60                stereo      0.0 dB        hpf     -  lpf     -  patch fx unit14:4 FX 04/-  sends 12
+   61 IN 61                stereo      0.0 dB        hpf     -  lpf     -  patch fx unit14:5 FX 05/-  sends 12
+   62 IN 62                mono     -150.0 dB        hpf     -  lpf     -  patch input port31:39 IN31 39/-  sends 0
+   63 IN 63                mono     -150.0 dB        hpf     -  lpf     -  patch input port31:38 IN31 38/-  sends 0
+   64 IN 64                mono     -150.0 dB        hpf     -  lpf     -  patch input port29:43 IN29 43/-  sends 6
+   65 IN 65                stereo      0.0 dB        hpf   129  lpf     -  patch input port35:25 IN35 25/-  sends 5
+   66 IN 66                stereo    -0.42 dB        hpf     -  lpf     -  patch input port35:27 IN35 27/-  sends 4
+   67 IN 67                stereo    -7.67 dB        hpf   193  lpf  7388  patch fx unit14:10 FX 10/-  sends 1
+   68 IN 68                stereo    -0.42 dB        hpf   193  lpf 10795  patch fx unit14:11 FX 11/-  sends 1
+   69 IN 69                mono     -150.0 dB        hpf     -  lpf     -  patch input port31:37 IN31 37/-  sends 0
+   70 IN 70                mono     -150.0 dB        hpf     -  lpf     -  patch input port31:36 IN31 36/-  sends 0
+   71 IN 71                mono     -150.0 dB        hpf     -  lpf     -  patch input port31:35 IN31 35/-  sends 0
+   72 IN 72                stereo   -150.0 dB  MUTE  hpf     -  lpf     -  patch input port29:39 IN29 39/-  sends 14
+   73 IN 73                mono     -150.0 dB        hpf     -  lpf     -  patch input port31:34 IN31 34/-  sends 0
+   74 IN 74                mono     -150.0 dB        hpf     -  lpf     -  patch input port31:33 IN31 33/-  sends 0
+   75 IN 75                stereo   -300.0 dB        hpf     -  lpf     -  patch -/-  sends 0
+   76 IN 80                stereo   -150.0 dB  MUTE  hpf     -  lpf     -  patch group6:8 GRP 08/-  sends 7
+   77 IN 81                stereo   -150.0 dB  MUTE  hpf    79  lpf     -  patch input port28:3 IN28 03/-  sends 0
+   78 IN 82                mono        0.0 dB        hpf   160  lpf     -  patch input port34:29 IN34 29/-  sends 0
+   79 IN 83                mono        0.0 dB        hpf   160  lpf     -  patch input port34:30 IN34 30/-  sends 0
+   80 IN 84                mono        0.0 dB        hpf   160  lpf     -  patch input port34:31 IN34 31/-  sends 0
+   81 IN 85                mono        0.0 dB        hpf   160  lpf     -  patch input port34:32 IN34 32/-  sends 0
+   82 IN 86                stereo    -12.0 dB        hpf     -  lpf     -  patch input port31:57 IN31 57/-  sends 5
+   83 IN 88                mono      -66.0 dB  MUTE  hpf    47  lpf     -  patch input port34:41 IN34 41/-  sends 3
+   84 IN 89                stereo   -150.0 dB        hpf     -  lpf     -  patch input port31:55 IN31 55/-  sends 14
+   85 IN 90                stereo    -4.72 dB  MUTE  hpf     -  lpf     -  patch input port31:49 IN31 49/-  sends 5
+   86 IN 91                stereo   -150.0 dB        hpf     -  lpf     -  patch input port31:51 IN31 51/-  sends 1
+   87 IN 92                stereo   -150.0 dB        hpf     -  lpf     -  patch -/-  sends 0
+   88 IN 95                mono        5.0 dB  MUTE  hpf    96  lpf     -  patch input port35:17 IN35 17/-  sends 9
+   89 IN 96                mono      -0.56 dB  MUTE  hpf    96  lpf     -  patch input port35:18 IN35 18/-  sends 0
+   90 IN 97                mono      -90.0 dB  MUTE  hpf    96  lpf     -  patch input port35:19 IN35 19/-  sends 4
+   91 IN 98                mono      -0.83 dB  MUTE  hpf    96  lpf     -  patch input port35:20 IN35 20/-  sends 7
+   92 IN 99                mono       0.87 dB        hpf    96  lpf     -  patch input port35:21 IN35 21/-  sends 3
+   93 IN 100               mono      -8.33 dB        hpf    81  lpf     -  patch input port35:22 IN35 22/-  sends 4
+   94 IN 101               mono     -150.0 dB        hpf   125  lpf     -  patch input port35:23 IN35 23/-  sends 2
+   95 IN 102               mono       -6.0 dB  MUTE  hpf     -  lpf     -  patch input port35:24 IN35 24/-  sends 1
+   96 IN 103               mono     -150.0 dB        hpf     -  lpf     -  patch input port29:44 IN29 44/-  sends 6
+   97 IN 105               mono     -150.0 dB        hpf    88  lpf     -  patch input port34:42 IN34 42/-  sends 11
+   98 IN 106               mono     -150.0 dB  MUTE  hpf     -  lpf     -  patch input port28:8 IN28 08/-  sends 2
+   99 IN 107               mono     -150.0 dB  MUTE  hpf     -  lpf     -  patch input port27:5 IN27 05/-  sends 21
+  100 IN 108               mono     -150.0 dB        hpf     -  lpf     -  patch input port29:63 IN29 63/-  sends 0
+
+AUX BUSSES
+   100 AUX 01               mono      -6.33 dB      
+   101 AUX 02               mono      -0.28 dB      
+   102 AUX 04               mono      -6.33 dB      
+   103 AUX 05               mono       -6.5 dB      
+   104 AUX 06               mono        0.0 dB      
+   105 AUX 07               stereo    -0.42 dB      
+   106 AUX 08               stereo    -0.56 dB      
+   107 AUX 09               stereo    -0.97 dB      
+   108 AUX 11               mono       0.18 dB      
+   109 AUX 12               mono       0.18 dB      
+   110 AUX 15               stereo      0.0 dB      
+   111 AUX 16               stereo      0.0 dB      
+   112 AUX 17               stereo      0.0 dB      
+   113 AUX 18               stereo      0.0 dB      
+   114 AUX 19               stereo      0.0 dB      
+   115 AUX 20               stereo      0.0 dB      
+   116 AUX 21               stereo      0.0 dB      
+   117 AUX 22               stereo      0.0 dB      
+   118 AUX 23               stereo      0.0 dB      
+   119 AUX 24               stereo      0.0 dB      
+   120 AUX 25               stereo      0.0 dB      
+   121 AUX 26               stereo    -0.42 dB      
+   122 AUX 27               stereo      0.0 dB      
+   123 AUX 28               stereo      0.0 dB      
+   124 AUX 29               stereo      0.0 dB      
+   125 AUX 31               stereo    -0.56 dB      
+   126 AUX 32               stereo     0.18 dB      
+   127 AUX 33               stereo     0.35 dB      
+   128 AUX 34               stereo      0.0 dB      
+   129 AUX 35               stereo     0.18 dB      
+   130 AUX 36               stereo      0.0 dB      
+   131 AUX 37               stereo      0.0 dB      
+   132 AUX 38               stereo      0.0 dB      
+   133 AUX 39               stereo    -0.69 dB      
+   134 AUX 40               stereo      0.0 dB      
+   135 AUX 42               stereo    -0.83 dB      
+
+GROUPS
+   136 GRP 01               mono        0.0 dB      
+   137 GRP 02               LCR         1.9 dB      
+   138 GRP 03               LCR        1.38 dB      
+   139 GRP 04               LCR       -2.22 dB      
+   140 GRP 05               LCR         0.0 dB      
+   141 GRP 06               mono      -0.28 dB      
+   142 GRP 07               LCRS (?)     0.0 dB      
+   143 GRP 08               stereo      0.0 dB      
+   144 GRP 09               mono      -0.14 dB      
+   145 GRP 10               mono       0.18 dB      
+   146 GRP 11               mono       0.18 dB      
+   147 GRP 12               mono        0.0 dB      
+   148 GRP 13               mono      -0.28 dB      
+   149 GRP 14               mono        0.0 dB      
+   150 GRP 15               mono      -0.14 dB      
+   151 GRP 16               mono        0.0 dB      
+   152 GRP 17               mono        0.0 dB      
+
+MATRIX OUTPUTS
+   255 MTX 01               mono        0.0 dB      
+   256 MTX 02               mono        0.0 dB      
+   257 MTX 03               mono        0.0 dB      
+   258 MTX 04               mono        0.0 dB      
+   259 MTX 05               mono        0.0 dB      
+   260 MTX 06               mono      -1.67 dB      
+   261 MTX 07               mono      -1.81 dB      
+   262 MTX 08               mono        0.0 dB      
+   263 MTX 09               mono        0.0 dB      
+   264 MTX 10               mono        0.0 dB      
+   265 MTX 11               mono        0.0 dB      
+   266 MTX 12               mono        0.0 dB      
+   267 MTX 13               mono        0.0 dB      
+   268 MTX 14               mono        0.0 dB      
+   269 MTX 15               mono     -150.0 dB      
+   270 MTX 16               mono     -150.0 dB      
+   271 MTX 17               mono     -150.0 dB      
+   272 MTX 18               mono       0.18 dB      
+   273 MTX 19               mono        0.0 dB      
+   274 MTX 20               mono        0.0 dB      
+   275 MTX 21               mono        0.0 dB      
+   276 MTX 22               mono        0.0 dB      
+   277 MTX 23               mono        0.0 dB      
+   278 MTX 24               mono      -0.28 dB      
+
+MATRIX INPUTS
+   231 MTXIN 01             mono    
+   232 MTXIN 02             mono    
+   233 MTXIN 03             mono    
+   234 MTXIN 04             mono    
+   235 MTXIN 05             mono    
+   236 MTXIN 06             mono    
+   237 MTXIN 07             mono    
+   238 MTXIN 08             mono    
+   239 MTXIN 09             mono    
+   240 MTXIN 10             mono    
+   241 MTXIN 11             mono    
+   242 MTXIN 12             mono    
+   243 MTXIN 13             mono    
+   244 MTXIN 14             mono    
+   245 MTXIN 15             mono    
+   246 MTXIN 16             mono    
+   247 MTXIN 17             mono    
+   248 MTXIN 18             mono    
+   249 MTXIN 19             mono    
+   250 MTXIN 20             mono    
+   251 MTXIN 21             mono    
+   252 MTXIN 22             mono    
+   253 MTXIN 23             mono    
+   254 MTXIN 24             mono    
+
+CONTROL GROUPS
+   198 CG 01                mono      -1.11 dB      
+   199 CG 02                mono      -1.94 dB      
+   200 CG 03                mono       0.69 dB      
+   201 CG 04                mono       2.07 dB      
+   202 CG 05                mono      -1.94 dB      
+   203 CG 06                mono      -1.94 dB      
+   204 CG 07                mono     -150.0 dB  MUTE
+   205 CG 08                mono      -0.69 dB      
+   206 CG 09                mono        0.0 dB      
+   207 CG 10                mono        0.0 dB      
+   208 CG 11                mono     -150.0 dB      
+   209 CG 12                mono       0.18 dB      
+   210 CG 13                mono      -1.94 dB      
+   211 CG 14                mono     -150.0 dB      
+   212 CG 15                mono      -0.97 dB      
+   213 CG 16                mono      -1.39 dB      
+   214 CG 17                mono      -1.25 dB      
+   215 CG 18                mono      -1.25 dB      
+   216 CG 19                mono       2.42 dB      
+   217 CG 20                mono        0.0 dB      
+
+FX UNITS
+  FX 01, FX 02, FX 03, FX 04, FX 05, FX 07, FX 08, FX 09, FX 10, FX 11
+
+GRAPHIC EQs
+  GEQ 01, GEQ 02, GEQ 03, GEQ 04, GEQ 05, GEQ 06, GEQ 07, GEQ 08, GEQ 09, GEQ 10, GEQ 11, GEQ 12, GEQ 13, GEQ 14, GEQ 15, GEQ 16, GEQ 17, GEQ 18, GEQ 19, GEQ 20, GEQ 21, GEQ 22, GEQ 23, GEQ 24, GEQ 25, GEQ 26, GEQ 27, GEQ 28, GEQ 29, GEQ 30, GEQ 31, GEQ 32
+
+SOLOS
+   218 SOLO 01              stereo   -10.33 dB      
+   219 SOLO 02              stereo     -0.0 dB      
+
+MONITORING
+   194 MON 01               stereo  
+
+TALKBACK
+   195 TB 01                mono    
+   196 TB 02                mono    
+   197 TB 03                mono    
+
+TALKBACK IN
+   220 TBIN 01              mono        0.0 dB      
+
+KIND 18
+   311 K18 01               mono     -150.0 dB      
+
+I/O PORTS (name lists per port group; blank = unnamed)
+  input port group 27: 8 sockets, 8 named: IN27 01, IN27 02, IN27 03, IN27 04, IN27 05, IN27 06, IN27 07, IN27 08
+  input port group 28: 16 sockets, 16 named: IN28 01, IN28 02, IN28 03, IN28 04, IN28 05, IN28 06, IN28 07, IN28 08, IN28 09, IN28 10, IN28 11, IN28 12 ...
+  input port group 29: 64 sockets, 64 named: IN29 01, IN29 02, IN29 03, IN29 04, IN29 05, IN29 06, IN29 07, IN29 08, IN29 09, IN29 10, IN29 11, IN29 12 ...
+  input port group 30: 64 sockets, 64 named: IN30 01, IN30 02, IN30 03, IN30 04, IN30 05, IN30 06, IN30 07, IN30 08, IN30 09, IN30 10, IN30 11, IN30 12 ...
+  input port group 31: 64 sockets, 64 named: IN31 01, IN31 02, IN31 03, IN31 04, IN31 05, IN31 06, IN31 07, IN31 08, IN31 09, IN31 10, IN31 11, IN31 12 ...
+  input port group 32: 64 sockets, 64 named: IN32 01, IN32 02, IN32 03, IN32 04, IN32 05, IN32 06, IN32 07, IN32 08, IN32 09, IN32 10, IN32 11, IN32 12 ...
+  input port group 33: 56 sockets, 56 named: IN33 01, IN33 02, IN33 03, IN33 04, IN33 05, IN33 06, IN33 07, IN33 08, IN33 09, IN33 10, IN33 11, IN33 12 ...
+  input port group 34: 56 sockets, 56 named: IN34 01, IN34 02, IN34 03, IN34 04, IN34 05, IN34 06, IN34 07, IN34 08, IN34 09, IN34 10, IN34 11, IN34 12 ...
+  input port group 35: 64 sockets, 64 named: IN35 01, IN35 02, IN35 03, IN35 04, IN35 05, IN35 06, IN35 07, IN35 08, IN35 09, IN35 10, IN35 11, IN35 12 ...
+  input port group 36: 64 sockets, 64 named: IN36 01, IN36 02, IN36 03, IN36 04, IN36 05, IN36 06, IN36 07, IN36 08, IN36 09, IN36 10, IN36 11, IN36 12 ...
+  output port group 77: 4 sockets, 4 named: OUT77 01, OUT77 02, OUT77 03, OUT77 04
+  output port group 78: 16 sockets, 16 named: OUT78 01, OUT78 02, OUT78 03, OUT78 04, OUT78 05, OUT78 06, OUT78 07, OUT78 08, OUT78 09, OUT78 10, OUT78 11, OUT78 12 ...
+  output port group 79: 64 sockets, 64 named: OUT79 01, OUT79 02, OUT79 03, OUT79 04, OUT79 05, OUT79 06, OUT79 07, OUT79 08, OUT79 09, OUT79 10, OUT79 11, OUT79 12 ...
+  output port group 80: 64 sockets, 64 named: OUT80 01, OUT80 02, OUT80 03, OUT80 04, OUT80 05, OUT80 06, OUT80 07, OUT80 08, OUT80 09, OUT80 10, OUT80 11, OUT80 12 ...
+  output port group 81: 64 sockets, 64 named: OUT81 01, OUT81 02, OUT81 03, OUT81 04, OUT81 05, OUT81 06, OUT81 07, OUT81 08, OUT81 09, OUT81 10, OUT81 11, OUT81 12 ...
+  output port group 82: 64 sockets, 64 named: OUT82 01, OUT82 02, OUT82 03, OUT82 04, OUT82 05, OUT82 06, OUT82 07, OUT82 08, OUT82 09, OUT82 10, OUT82 11, OUT82 12 ...
+  output port group 83: 56 sockets, 56 named: OUT83 01, OUT83 02, OUT83 03, OUT83 04, OUT83 05, OUT83 06, OUT83 07, OUT83 08, OUT83 09, OUT83 10, OUT83 11, OUT83 12 ...
+  output port group 84: 56 sockets, 56 named: OUT84 01, OUT84 02, OUT84 03, OUT84 04, OUT84 05, OUT84 06, OUT84 07, OUT84 08, OUT84 09, OUT84 10, OUT84 11, OUT84 12 ...
+  output port group 85: 64 sockets, 64 named: OUT85 01, OUT85 02, OUT85 03, OUT85 04, OUT85 05, OUT85 06, OUT85 07, OUT85 08, OUT85 09, OUT85 10, OUT85 11, OUT85 12 ...
+  output port group 86: 64 sockets, 64 named: OUT86 01, OUT86 02, OUT86 03, OUT86 04, OUT86 05, OUT86 06, OUT86 07, OUT86 08, OUT86 09, OUT86 10, OUT86 11, OUT86 12 ...
+
+I/O PANEL NAMES: Misc, Graphic EQs, Effects, Channels, Groups, Auxes, Matrix, Solos, Local 1-8, Local aes, P/B 1-8, P/B 9-16, P/B 17-24, P/B 25-32, P/B 33-40, P/B 41-48, P/B 49-56, P/B 57-64, RME 1-8, RME 9-16, RME 17-24, RME 25-32, RME 33-40, RME 41-48, RME 49-56, RME 57-64, Ferro 1-8, Ferro 9-16, Ferro 17-24, Ferro 25-32, Ferro 33-40, Ferro 41-48, Ferro 49-56, Ferro 57-64, Install 1-8, Install 9-16, Install 17-24, Install 25-32, Install 33-40, Install 41-48, Install 49-56, Install 57-64, Pit 1-8, Mic 9-16, Mic 1-8, Mic 9-16, Mic 17-24, Mic 25-32, Mic 33-40, AES i/o 1-8, AES i/o 9-16, RF 1-8, RF 9-16, RF 17-24, DAD AES, Aviom Pit, Aviom Pit, Aviom AmpR, Aviom AmpR, Waves 1-16, Waves 17-32, Waves 33-48, Waves 49-64
+
+FADER BANKS (12 faders each)
+   0 Bank 01          [] rgb c6cdff: IN 57, IN 58, IN 60, IN 61, IN 09, IN 10, IN 12, IN 13, IN 01, IN 02, IN 04, IN 05
+   1 Bank 02          [] rgb c6cdff: IN 37, IN 38, IN 39, IN 40, IN 41, IN 42, IN 43, IN 44, IN 45, IN 46, CG 14, IN 72
+   2 Bank 03          [] rgb c6cdff: IN 25, IN 27, -, -, IN 29, IN 101, -, IN 30, IN 32, IN 33, IN 34, IN 44
+   3 Bank 04          [] rgb c6cdff: IN 37, IN 38, IN 39, IN 40, IN 41, IN 42, IN 43, IN 44, IN 45, IN 46, CG 14, K18 01
+   4 Bank 05          [] rgb c00000: GRP 17, GRP 16, GRP 15, GRP 14, GRP 13, GRP 12, GRP 11, GRP 10, GRP 09, GRP 06, -, -
+   5 Bank 06          [] rgb c6cdff: IN 06, -, IN 07, -, IN 03, -, IN 08, -, -, -, IN 16, K18 01
+   6 Bank 07          [] rgb c6cdff: -, -, -, -, -, -, -, IN 48, IN 65, IN 66, IN 67, IN 68
+   7 Bank 08          [] rgb c6cdff: IN 49, IN 50, IN 51, IN 52, IN 53, IN 54, IN 55, IN 56, IN 15, IN 14, -, -
+   8 Bank 09          [] rgb c6cdff: IN 95, IN 96, IN 97, IN 98, IN 99, IN 100, IN 88, IN 89, IN 90, IN 91, IN 24, IN 16
+   9 Bank 10          [] rgb ae5ae7: AUX 09, AUX 08, AUX 07, AUX 31, AUX 32, AUX 33, AUX 34, AUX 35, AUX 36, AUX 37, AUX 38, AUX 39
+  10 Bank 11          [] rgb ae5ae7: AUX 40, AUX 15, AUX 16, AUX 17, AUX 18, AUX 19, AUX 20, AUX 21, AUX 22, AUX 23, AUX 24, AUX 25
+  11 Bank 12          [] rgb ae5ae7: AUX 26, AUX 27, AUX 28, AUX 29, -, -, AUX 01, AUX 05, AUX 04, -, -, -
+  12 Bank 13          [] rgb ae5ae7: -, -, AUX 06, AUX 02, AUX 42, AUX 12, AUX 11, -, -, -, -, -
+  13 Bank 14          [] rgb c00000: GRP 02, GRP 03, GRP 04, GRP 05, -, -, -, -, -, -, GRP 07, GRP 01
+  14 Bank 15          [] rgb c6cdff: IN 01, IN 02, IN 04, IN 05, IN 06, IN 08, GRP 03, IN 48, IN 65, IN 66, IN 67, IN 68
+  15 Bank 16          [] rgb c6cdff: IN 17, IN 18, IN 19, IN 20, IN 21, IN 22, -, -, -, -, -, -
+  16 Bank 17          [] rgb c6cdff: IN 86, IN 95, IN 96, IN 97, IN 98, IN 101, IN 102, -, -, IN 105, IN 107, IN 106
+  17 Bank 18          [] rgb c6cdff: IN 81, IN 80, -, IN 36, IN 47, IN 64, IN 103, -, -, IN 108, IN 72, IN 11
+  18 Bank 19          [] rgb 000000: -, -, -, -, -, -, -, -, -, -, -, -
+  19 Bank 20          [] rgb 2b9fff: GRP 05, IN 41, IN 42, IN 43, IN 44, IN 45, GRP 04, CG 02, CG 03, CG 04, CG 05, CG 06
+  20 Bank 21          [] rgb c6cdff: IN 74, IN 73, IN 71, IN 70, IN 69, IN 63, IN 62, IN 59, IN 28, IN 26, -, K18 01
+  21 Bank 22          [] rgb 000000: -, -, -, -, -, -, -, -, -, -, -, -
+  22 Bank 23          [] rgb 2b9fff: CG 01, CG 15, CG 16, CG 17, CG 18, CG 19, CG 08, IN 44, CG 09, CG 10, CG 11, CG 12
+  23 Bank 24          [] rgb 50ffe4: MTX 01, MTX 02, MTX 03, MTX 04, MTX 05, MTX 06, MTX 07, MTX 08, MTX 09, MTX 10, MTX 11, MTX 12
+  24 Bank 25          [] rgb 50ffe4: MTX 13, MTX 14, MTX 18, -, SOLO 01, SOLO 02, MTX 19, MTX 20, MTX 21, MTX 22, MTX 23, MTX 24
+  25 Bank 26          [] rgb 2b9fff: CG 01, CG 02, CG 03, CG 04, CG 05, CG 06, IN 44, CG 08, CG 09, CG 10, CG 11, CG 12
+  26 Bank 27          [] rgb 000000: -, -, -, -, -, -, -, -, -, -, -, -
+  27 Bank 28          [] rgb c00000: GRP 02, GRP 03, GRP 04, GRP 05, -, -, -, -, -, -, -, -
+  28 Bank 29          [] rgb ae5ae7: -, -, AUX 06, AUX 02, AUX 42, AUX 12, AUX 11, -, -, -, -, -
+  29 Bank 30          [] rgb c6cdff: IN 17, IN 18, IN 19, IN 20, IN 21, IN 22, -, -, -, -, -, -
+  30 Bank 31          [] rgb aeffd2: IN 32, IN 33, IN 34, IN 35, -, -, -, -, -, -, -, -
+  31 Bank 32          [] rgb c6cdff: IN 25, IN 27, -, -, IN 29, IN 101, -, -, IN 32, IN 33, IN 34, -
+  32 Bank 33          [] rgb c6cdff: IN 01, IN 02, IN 04, IN 05, IN 09, IN 10, IN 12, IN 13, IN 57, IN 58, IN 60, IN 61
+  33 Bank 34          [] rgb 000000: -, -, -, -, -, -, -, -, -, -, -, -
+
+MACROS (index, page, slot, colour, name, action records as hex)
+    1 page   3 slot   0 #dffff2 Macro 01                 1 action(s): cd009000005c0d0c00000000010007000000
+    2 page   3 slot   1 #dffff2 Macro 02                 1 action(s): cd009000005c0d0c00000000010008000000
+    3 page   3 slot   5 #1ae8ff Macro 03                 1 action(s): cd009000005c0d0c00000000010005000000
+    4 page   3 slot   6 #1ae8ff Macro 04                 1 action(s): cd009000005c0d0c00000000010004000000
+    5 page   3 slot   7 #00ff00 Macro 05                 1 action(s): cd009000005c0d0c00000000010001000000
+    6 page   3 slot   8 #ffee22 Macro 06                 1 action(s): cd009000005c0d0c00000000010006000000
+    7 page   3 slot   9 #ff0000 Macro 07                 1 action(s): cd009000005c0d0c00000000010002000000
+    8 page   3 slot  10 #ff33f0 Macro 08                 1 action(s): ee02000000ee020000000000000000000000
+    9 page   3 slot  11 #8050e0 Macro 09                 1 action(s): cb00000000c6020000000000ffffffff0000
+   18 page   3 slot  13 #dffff2 Macro 18                 1 action(s): c900000000a6010000000000000000000000
+   21 page   3 slot  15 #ae5ae7 Macro 21                 1 action(s): cd00c000005c0d0f00000000020000000000
+   22 page   3 slot  16 #ae5ae7 Macro 22                 1 action(s): cd00c000005c0d0f00000000030000000000
+   23 page   3 slot  17 #00ff00 Macro 23                 1 action(s): cd00c000005c0d0f00000000000000000000
+   25 page   3 slot  18 #ffee22 Macro 25                 1 action(s): cd00c000005c0d0f00000000010000000000
+   94 page   3 slot  19 #00c000 Macro 94                 1 action(s): cd00c000005c0d0f00000000050000000000
+   29 page   3 slot  20 #c00000 Macro 29                 3 action(s): 01000e0100010101000000010000803f0000 | 01000e0100050105000000010000803f0000 | 01000e0100610162000000010000803f0000
+   31 page   3 slot  21 #c00000 Macro 31                 2 action(s): 01000e0100020102000000010000803f0000 | 01000e0100060106000000010000803f0000
+   35 page   3 slot  22 #c00000 Macro 35                 2 action(s): 01000e0100030103000000010000803f0000 | 01000e0100070107000000010000803f0000
+   37 page   3 slot  23 #c00000 Macro 37                 2 action(s): 01000e0100040104000000010000803f0000 | 01000e0100080108000000010000803f0000
+   30 page   4 slot  20 #00c000 Macro 30                 5 action(s): 01000e010001010100000001000000000000 | 01000e010005010500000001000000000000 | 01000e010061016200000001000000000000 | 000000000000000000000000000000000000 ...
+   32 page   4 slot  21 #00c000 Macro 32                 2 action(s): 01000e010002010200000001000000000000 | 01000e010006010600000001000000000000
+   36 page   4 slot  22 #00c000 Macro 36                 2 action(s): 01000e010003010300000001000000000000 | 01000e010007010700000001000000000000
+   38 page   4 slot  23 #00c000 Macro 38                 2 action(s): 01000e010004010400000001000000000000 | 01000e010008010800000001000000000000
+   43 page 141 slot   0 #dffff2 Macro 43                 2 action(s): 0100220c00010101000000010000803f0000 | 0100220c00050105000000010000803f0000
+   45 page 141 slot   1 #dffff2 Macro 45                 2 action(s): 0100220c00020102000000010000803f0000 | 0100220c00060106000000010000803f0000
+   48 page 141 slot   3 #dffff2 Macro 48                 2 action(s): 0100220c00030103000000010000803f0000 | 0100220c00070107000000010000803f0000
+   49 page 141 slot   4 #dffff2 Macro 49                 2 action(s): 0100220c00040104000000010000803f0000 | 0100220c00080108000000010000803f0000
+   68 page 141 slot   6 #dffff2 Macro 68                 1 action(s): 0100220c00610162000000010000803f0000
+   69 page 141 slot  14 #dffff2 Macro 69                 1 action(s): 0100220c0061016200000001000000000000
+   51 page 141 slot   8 #dffff2 Macro 51                 2 action(s): 0100220c0001010100000001000000000000 | 0100220c0005010500000001000000000000
+   52 page 141 slot   9 #dffff2 Macro 52                 2 action(s): 0100220c0002010200000001000000000000 | 0100220c0006010600000001000000000000
+   54 page 141 slot  11 #dffff2 Macro 54                 2 action(s): 0100220c0003010300000001000000000000 | 0100220c0007010700000001000000000000
+   55 page 141 slot  12 #dffff2 Macro 55                 2 action(s): 0100220c0004010400000001000000000000 | 0100220c0008010800000001000000000000
+   60 page   3 slot   3 #dffff2 Macro 60                 2 action(s): 780079000018070100000000020000000000 | 000000000000000000000000000000000000
+   63 page   0 slot   0 #dffff2 Macro 63                 1 action(s): 0100220c00140116000000010000803f0000
+   64 page   0 slot   0 #dffff2 Macro 64                 1 action(s): 0100220c0014011600000001000000000000
+   65 page   4 slot   4 #dffff2 Macro 65                 30 action(s): 0100000100320132000000010000001f0000 | 0100000101010101000000010000021f1803 | 0100000101020102000000010000031f0000 | 0100000101030103000000010000041f0000 ...
+   66 page   3 slot   4 #dffff2 Macro 66                 30 action(s): 0100000100320132000000010000001d0000 | 0100000101010101000000010000021d1803 | 0100000101020102000000010000031d0000 | 0100000101030103000000010000041d0000 ...
+   67 page   0 slot   0 #dffff2 Macro 67                 1 action(s): ee02000000ee020000000000000000000000  extra: ['200100660100004943140000']
+   70 page   4 slot  29 #00c000 Macro 70                 1 action(s): 01000e010023012c00000001000000000000
+   71 page   3 slot  29 #c00000 Macro 71                 1 action(s): 01000e010023012c000000010000803f0000
+   72 page   3 slot  27 #ff0000 Macro 72                 2 action(s): cd009000005c0d1000000000010009000000 | 000000000000000000000000000000000000
+   73 page 141 slot  25 #dffff2 Macro 73                 1 action(s): 0100220c0009010e000000010000803f0000
+   82 page 141 slot  35 #dffff2 Macro 82                 1 action(s): 0100220c0009010e00000001000000000000
+   74 page 141 slot  26 #dffff2 Macro 74                 1 action(s): 0100220c000f010f000000010000803f0000
+   83 page 141 slot  36 #dffff2 Macro 83                 1 action(s): 0100220c000f010f00000001000000000000
+   75 page 141 slot  27 #dffff2 Macro 75                 1 action(s): 0100220c00100110000000010000803f0000
+   84 page 141 slot  37 #dffff2 Macro 84                 1 action(s): 0100220c0010011000000001000000000000
+   76 page 141 slot  28 #dffff2 Macro 76                 1 action(s): 0100220c00110111000000010000803f0000
+   85 page 141 slot  38 #dffff2 Macro 85                 1 action(s): 0100220c0011011100000001000000000000
+   77 page 141 slot  29 #dffff2 Macro 77                 1 action(s): 0100220c00140114000000010000803f0000
+   86 page 141 slot  39 #dffff2 Macro 86                 1 action(s): 0100220c0014011400000001000000000000
+   78 page 141 slot  30 #dffff2 Macro 78                 1 action(s): 0100220c00150115000000010000803f0000
+   87 page 141 slot  40 #dffff2 Macro 87                 1 action(s): 0100220c0015011500000001000000000000
+   79 page 141 slot  31 #dffff2 Macro 79                 1 action(s): 0100220c00160116000000010000803f0000
+   88 page 141 slot  41 #dffff2 Macro 88                 1 action(s): 0100220c0016011600000001000000000000
+   80 page 141 slot  32 #dffff2 Macro 80                 1 action(s): 0100220c00180118000000010000803f0000
+   89 page 141 slot  42 #dffff2 Macro 89                 1 action(s): 0100220c0018011800000001000000000000
+   96 page 141 slot  24 #dffff2 Macro 96                 2 action(s): 0100220c00090111000000010000803f0000 | 0100220c00140117000000010000803f0000
+   97 page 141 slot  34 #dffff2 Macro 97                 2 action(s): 0100220c0009011100000001000000000000 | 0100220c0014011700000001000000000000
+   81 page 141 slot  33 #dffff2 Macro 81                 1 action(s): 0100220c00220122000000010000803f0000
+   90 page 141 slot  43 #dffff2 Macro 90                 1 action(s): 0100220c0022012200000001000080bf0000
+   92 page   4 slot  30 #2d5cff Macro 92                 7 action(s): 01000e0100010108000000010000803f0000 | 01000e0100540155000000010000803f0000 | 0a00211000010a01000000010000c8c10000 | 0a00211000080a09000000010000c8c10000 ...
+   93 page   3 slot  30 #daff09 Macro 93                 7 action(s): 01000e010001010800000001000000000000 | 01000e010054015500000001000000000000 | 0a00211000010a0100000001000000000000 | 0a00211000080a0900000001000000000000 ...
+
+SNAPSHOTS (list label '', count field 45)
+    1 Snap 01                      saved 2025-09-12 14:46:39  objects 1347
+    2 Snap 02                      saved 2025-09-12 14:47:40  objects 1348
+    3 Snap 03                      saved 2025-09-12 11:28:30  objects 1348
+    4 Snap 04                      saved 2025-09-20 21:30:37  objects 1348
+    5 Snap 05                      saved 2025-09-20 21:31:08  objects 1348
+    6 Snap 06                      saved 2025-09-20 21:31:15  objects 1348
+    7 Snap 07                      saved 2025-09-12 15:16:32  objects 1348
+    8 Snap 08                      saved 2025-09-20 21:36:43  objects 1348
+    9 Snap 09                      saved 2025-09-20 21:37:06  objects 1348
+   10 Snap 10                      saved 2025-09-20 21:37:29  objects 1348
+   11 Snap 11                      saved 2025-09-20 21:37:49  objects 1348
+   12 Snap 12                      saved 2025-09-20 21:38:08  objects 1348
+   13 Snap 13                      saved 2025-09-12 15:17:14  objects 1348
+   14 Snap 14                      saved 2025-09-20 21:41:08  objects 1348
+   15 Snap 15                      saved 2025-09-12 15:17:34  objects 1348
+   16 Snap 16                      saved 2025-09-20 21:42:44  objects 1348
+   17 Snap 17                      saved 2025-09-27 16:32:48  objects 1348
+   18 Snap 18                      saved 2025-09-27 16:35:31  objects 1348
+   19 Snap 19                      saved 2025-09-27 16:36:14  objects 1348
+   20 Snap 20                      saved 2025-09-27 16:36:28  objects 1348
+   21 Snap 21                      saved 2025-09-27 16:36:39  objects 1348
+   22 Snap 22                      saved 2025-09-27 16:36:47  objects 1348
+   23 Snap 23                      saved 2025-09-12 15:19:36  objects 1348
+   24 Snap 24                      saved 2025-09-22 22:15:55  objects 1347
+   25 Snap 25                      saved 2025-09-20 21:43:05  objects 1348
+   26 Snap 26                      saved 2025-09-22 22:31:18  objects 1347
+   27 Snap 27                      saved 2025-09-12 15:19:57  objects 1348
+   28 Snap 28                      saved 2025-09-20 21:44:24  objects 1348
+   29 Snap 29                      saved 2025-09-20 21:44:54  objects 1348
+   30 Snap 30                      saved 2025-09-20 21:45:11  objects 1348
+   31 Snap 31                      saved 2025-09-20 22:09:40  objects 1348
+   32 Snap 32                      saved 2025-09-20 22:09:50  objects 1348
+   33 Snap 33                      saved 2025-09-12 15:20:27  objects 1348
+   34 Snap 34                      saved 2025-09-20 22:10:59  objects 1348
+   35 Snap 35                      saved 2025-09-20 22:11:13  objects 1348
+   36 Snap 36                      saved 2025-09-20 22:11:25  objects 1348
+   37 Snap 37                      saved 2025-09-12 15:20:36  objects 1348
+   38 Snap 38                      saved 2025-09-20 22:19:44  objects 1348
+   39 Snap 39                      saved 2025-09-12 15:20:47  objects 1348
+   40 Snap 40                      saved 2025-09-20 22:22:52  objects 1348
+   41 Snap 41                      saved 2025-09-12 15:20:54  objects 1348
+   42 Snap 42                      saved 2025-09-20 22:25:42  objects 1348
+   43 Snap 43                      saved 2025-09-12 15:21:44  objects 1348
+   44 Snap 44                      saved 2025-09-12 15:23:05  objects 1348
+   45 Snap 45                      saved 2025-09-12 15:27:08  objects 1347
+
+PRESET LIBRARY: 4 x 'Cat 1', 1 x 'Cat 2', 4 x 'Cat 3', 6 x 'Cat 4', 6 x 'Cat 5', 5 x 'Cat 6', 6 x 'Cat 7', 5 x 'Cat 8', 20 x 'Cat 9', 19 x 'Cat 10', 35 x 'Cat 11', 6 x 'Cat 12', 3 x 'Cat 13', 2 x 'Cat 14', 12 x 'Cat 15', 8 x 'Cat 16', 8 x 'Cat 17'
+  Preset 001 (Cat 1), Preset 002 (Cat 1), Preset 003 (Cat 1), Preset 004 (Cat 2), Preset 005 (Cat 3), Preset 006 (Cat 3), Preset 007 (Cat 3), Preset 008 (Cat 3), Preset 009 (Cat 4), Preset 010 (Cat 4), Preset 011 (Cat 4), Preset 012 (Cat 4), Preset 013 (Cat 4), Preset 014 (Cat 4), Preset 015 (Cat 5), Preset 016 (Cat 5), Preset 017 (Cat 5), Preset 018 (Cat 5), Preset 019 (Cat 5), Preset 020 (Cat 6), Preset 021 (Cat 6), Preset 022 (Cat 6), Preset 023 (Cat 6), Preset 024 (Cat 6), Preset 025 (Cat 7), Preset 026 (Cat 7), Preset 027 (Cat 7), Preset 028 (Cat 7), Preset 029 (Cat 7), Preset 030 (Cat 8), Preset 031 (Cat 8), Preset 032 (Cat 8), Preset 033 (Cat 8), Preset 034 (Cat 8), Preset 035 (Cat 9), Preset 036 (Cat 9), Preset 037 (Cat 9), Preset 038 (Cat 9), Preset 039 (Cat 9), Preset 040 (Cat 9), Preset 041 (Cat 9), Preset 042 (Cat 9), Preset 043 (Cat 9), Preset 044 (Cat 9), Preset 045 (Cat 9), Preset 046 (Cat 9), Preset 047 (Cat 9), Preset 048 (Cat 9), Preset 049 (Cat 10), Preset 050 (Cat 9), Preset 051 (Cat 10), Preset 052 (Cat 10), Preset 053 (Cat 10), Preset 054 (Cat 10), Preset 055 (Cat 10), Preset 056 (Cat 10), Preset 057 (Cat 10), Preset 058 (Cat 10), Preset 059 (Cat 10), Preset 060 (Cat 10) ...
+
+SETS: Set 1#ff0000, Set 2#00ff00, Set 3#0000ff, Set 4#ffff00, Set 5#00ffff, Set 6#ff00ff, Set 7#000000, Set 8#ffffff ...
+A/B/C LABELS: A1, A2, A3, A4, A5, A6 ...
+NOTES: 0 chars, 0 lines

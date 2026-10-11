@@ -1,0 +1,222 @@
+index,kind,name,format,fader_dB,mute,hpf_Hz,lpf_Hz,patch_main,patch_alt,sends_on
+0,input,IN 01,mono,0.0,True,136,,input port35:5 IN35 05,input port29:3 IN29 03,9
+1,input,IN 02,mono,0.0,True,118,,input port35:6 IN35 06,input port29:4 IN29 04,8
+2,input,IN 03,stereo,0.52,False,,,fx unit14:3 FX 03,-,12
+3,input,IN 04,mono,-0.69,True,116,,input port35:7 IN35 07,input port29:5 IN29 05,8
+4,input,IN 05,mono,-0.42,True,122,,input port35:8 IN35 08,input port29:6 IN29 06,9
+5,input,IN 06,mono,-0.83,True,113,,input port35:1 IN35 01,input port29:7 IN29 07,8
+6,input,IN 07,mono,-0.28,True,77,,input port35:1 IN35 01,input port29:7 IN29 07,7
+7,input,IN 08,mono,-0.14,False,107,,input port29:8 IN29 08,-,8
+8,input,IN 09,mono,0.0,True,77,,input port35:5 IN35 05,input port29:3 IN29 03,7
+9,input,IN 10,mono,-0.42,True,77,,input port35:6 IN35 06,input port29:4 IN29 04,6
+10,input,IN 11,stereo,-15.67,True,,,input port29:1 IN29 01,-,4
+11,input,IN 12,mono,0.0,True,77,,input port35:7 IN35 07,input port29:5 IN29 05,8
+12,input,IN 13,mono,0.0,True,54,,input port35:8 IN35 08,input port29:6 IN29 06,7
+13,input,IN 14,mono,-0.42,False,,,input port29:38 IN29 38,-,0
+14,input,IN 15,mono,0.35,False,,,input port29:37 IN29 37,-,0
+15,input,IN 16,mono,-1.94,False,,,input port31:54 IN31 54,-,0
+16,input,IN 17,mono,0.0,True,,22433,input port33:1 IN33 01,-,12
+17,input,IN 18,mono,-2.08,True,47,,input port33:2 IN33 02,-,12
+18,input,IN 19,mono,-1.11,True,107,,input port33:3 IN33 03,-,11
+19,input,IN 20,mono,-5.67,True,16,,input port33:4 IN33 04,-,12
+20,input,IN 21,stereo,-3.89,True,34,,input port33:5 IN33 05,-,12
+21,input,IN 22,stereo,0.0,True,142,,input port33:7 IN33 07,-,12
+22,input,IN 23,stereo,-150.0,False,32,14543,input port33:15 IN33 15,-,5
+23,input,IN 24,mono,-150.0,False,,,input port31:53 IN31 53,-,0
+24,input,IN 25,mono,-2.22,True,21,,input port35:9 IN35 09,-,11
+25,input,IN 26,mono,-150.0,False,,,input port31:42 IN31 42,-,0
+26,input,IN 27,mono,-4.86,True,73,,input port35:10 IN35 10,input port33:10 IN33 10,11
+27,input,IN 28,mono,-150.0,False,,,input port31:41 IN31 41,-,0
+28,input,IN 29,stereo,-2.5,True,27,,input port33:11 IN33 11,-,11
+29,input,IN 30,mono,4.83,True,122,25000,input port35:14 IN35 14,-,11
+30,input,IN 31,stereo,-150.0,False,74,,input port33:13 IN33 13,-,10
+31,input,IN 32,mono,-0.97,True,132,,input port35:11 IN35 11,-,13
+32,input,IN 33,mono,-5.0,True,48,14154,input port35:12 IN35 12,-,13
+33,input,IN 34,mono,0.0,True,57,17109,input port35:13 IN35 13,-,13
+34,input,IN 35,mono,-49.44,True,136,12031,-,-,13
+35,input,IN 36,mono,-150.0,False,,,input port29:41 IN29 41,-,4
+36,input,IN 37,stereo,1.21,True,,,input port29:9 IN29 09,-,14
+37,input,IN 38,stereo,0.0,True,,,input port29:11 IN29 11,-,14
+38,input,IN 39,stereo,0.0,False,,,input port29:13 IN29 13,-,13
+39,input,IN 40,stereo,-0.42,True,,,input port29:15 IN29 15,-,12
+40,input,IN 41,stereo,-1.39,False,,,input port29:17 IN29 17,-,13
+41,input,IN 42,stereo,0.52,False,,,input port29:19 IN29 19,-,12
+42,input,IN 43,stereo,1.21,False,,,input port29:21 IN29 21,-,12
+43,input,IN 44,stereo,0.69,False,,,input port29:23 IN29 23,-,13
+44,input,IN 45,stereo,0.52,False,,,input port29:25 IN29 25,-,12
+45,input,IN 46,stereo,-0.14,True,,,input port29:27 IN29 27,-,12
+46,input,IN 47,mono,-150.0,False,,,input port29:42 IN29 42,-,4
+47,input,IN 48,mono,-0.83,True,84,,fx unit14:8 FX 08,-,10
+48,input,IN 49,mono,-0.28,False,,,input port29:29 IN29 29,-,9
+49,input,IN 50,mono,-0.69,False,,,input port29:30 IN29 30,-,9
+50,input,IN 51,mono,-0.42,False,,,input port29:31 IN29 31,-,4
+51,input,IN 52,mono,0.18,False,,,input port29:32 IN29 32,-,0
+52,input,IN 53,mono,-0.14,False,,,input port29:33 IN29 33,-,0
+53,input,IN 54,mono,0.0,False,,,input port29:34 IN29 34,-,2
+54,input,IN 55,mono,-0.28,False,,,input port29:35 IN29 35,-,0
+55,input,IN 56,mono,0.35,False,,,input port29:36 IN29 36,-,0
+56,input,IN 57,stereo,0.52,False,,,fx unit14:1 FX 01,-,12
+57,input,IN 58,stereo,0.69,False,,,fx unit14:2 FX 02,-,12
+58,input,IN 59,mono,-150.0,False,,,input port31:40 IN31 40,-,0
+59,input,IN 60,stereo,0.0,False,,,fx unit14:4 FX 04,-,12
+60,input,IN 61,stereo,0.0,False,,,fx unit14:5 FX 05,-,12
+61,input,IN 62,mono,-150.0,False,,,input port31:39 IN31 39,-,0
+62,input,IN 63,mono,-150.0,False,,,input port31:38 IN31 38,-,0
+63,input,IN 64,mono,-150.0,False,,,input port29:43 IN29 43,-,6
+64,input,IN 65,stereo,0.0,False,129,,input port35:25 IN35 25,-,5
+65,input,IN 66,stereo,-0.42,False,,,input port35:27 IN35 27,-,4
+66,input,IN 67,stereo,-7.67,False,193,7388,fx unit14:10 FX 10,-,1
+67,input,IN 68,stereo,-0.42,False,193,10795,fx unit14:11 FX 11,-,1
+68,input,IN 69,mono,-150.0,False,,,input port31:37 IN31 37,-,0
+69,input,IN 70,mono,-150.0,False,,,input port31:36 IN31 36,-,0
+70,input,IN 71,mono,-150.0,False,,,input port31:35 IN31 35,-,0
+71,input,IN 72,stereo,-150.0,True,,,input port29:39 IN29 39,-,14
+72,input,IN 73,mono,-150.0,False,,,input port31:34 IN31 34,-,0
+73,input,IN 74,mono,-150.0,False,,,input port31:33 IN31 33,-,0
+74,input,IN 75,stereo,-300.0,False,,,-,-,0
+75,input,IN 80,stereo,-150.0,True,,,group6:8 GRP 08,-,7
+76,input,IN 81,stereo,-150.0,True,79,,input port28:3 IN28 03,-,0
+77,input,IN 82,mono,0.0,False,160,,input port34:29 IN34 29,-,0
+78,input,IN 83,mono,0.0,False,160,,input port34:30 IN34 30,-,0
+79,input,IN 84,mono,0.0,False,160,,input port34:31 IN34 31,-,0
+80,input,IN 85,mono,0.0,False,160,,input port34:32 IN34 32,-,0
+81,input,IN 86,stereo,-12.0,False,,,input port31:57 IN31 57,-,5
+82,input,IN 88,mono,-66.0,True,47,,input port34:41 IN34 41,-,3
+83,input,IN 89,stereo,-150.0,False,,,input port31:55 IN31 55,-,14
+84,input,IN 90,stereo,-4.72,True,,,input port31:49 IN31 49,-,5
+85,input,IN 91,stereo,-150.0,False,,,input port31:51 IN31 51,-,1
+86,input,IN 92,stereo,-150.0,False,,,-,-,0
+87,input,IN 95,mono,5.0,True,96,,input port35:17 IN35 17,-,9
+88,input,IN 96,mono,-0.56,True,96,,input port35:18 IN35 18,-,0
+89,input,IN 97,mono,-90.0,True,96,,input port35:19 IN35 19,-,4
+90,input,IN 98,mono,-0.83,True,96,,input port35:20 IN35 20,-,7
+91,input,IN 99,mono,0.87,False,96,,input port35:21 IN35 21,-,3
+92,input,IN 100,mono,-8.33,False,81,,input port35:22 IN35 22,-,4
+93,input,IN 101,mono,-150.0,False,125,,input port35:23 IN35 23,-,2
+94,input,IN 102,mono,-6.0,True,,,input port35:24 IN35 24,-,1
+95,input,IN 103,mono,-150.0,False,,,input port29:44 IN29 44,-,6
+96,input,IN 105,mono,-150.0,False,88,,input port34:42 IN34 42,-,11
+97,input,IN 106,mono,-150.0,True,,,input port28:8 IN28 08,-,2
+98,input,IN 107,mono,-150.0,True,,,input port27:5 IN27 05,-,21
+99,input,IN 108,mono,-150.0,False,,,input port29:63 IN29 63,-,0
+100,aux,AUX 01,mono,-6.33,False,,,,,
+101,aux,AUX 02,mono,-0.28,False,,,,,
+102,aux,AUX 04,mono,-6.33,False,,,,,
+103,aux,AUX 05,mono,-6.5,False,,,,,
+104,aux,AUX 06,mono,0.0,False,,,,,
+105,aux,AUX 07,stereo,-0.42,False,,,,,
+106,aux,AUX 08,stereo,-0.56,False,,,,,
+107,aux,AUX 09,stereo,-0.97,False,,,,,
+108,aux,AUX 11,mono,0.18,False,,,,,
+109,aux,AUX 12,mono,0.18,False,,,,,
+110,aux,AUX 15,stereo,0.0,False,,,,,
+111,aux,AUX 16,stereo,0.0,False,,,,,
+112,aux,AUX 17,stereo,0.0,False,,,,,
+113,aux,AUX 18,stereo,0.0,False,,,,,
+114,aux,AUX 19,stereo,0.0,False,,,,,
+115,aux,AUX 20,stereo,0.0,False,,,,,
+116,aux,AUX 21,stereo,0.0,False,,,,,
+117,aux,AUX 22,stereo,0.0,False,,,,,
+118,aux,AUX 23,stereo,0.0,False,,,,,
+119,aux,AUX 24,stereo,0.0,False,,,,,
+120,aux,AUX 25,stereo,0.0,False,,,,,
+121,aux,AUX 26,stereo,-0.42,False,,,,,
+122,aux,AUX 27,stereo,0.0,False,,,,,
+123,aux,AUX 28,stereo,0.0,False,,,,,
+124,aux,AUX 29,stereo,0.0,False,,,,,
+125,aux,AUX 31,stereo,-0.56,False,,,,,
+126,aux,AUX 32,stereo,0.18,False,,,,,
+127,aux,AUX 33,stereo,0.35,False,,,,,
+128,aux,AUX 34,stereo,0.0,False,,,,,
+129,aux,AUX 35,stereo,0.18,False,,,,,
+130,aux,AUX 36,stereo,0.0,False,,,,,
+131,aux,AUX 37,stereo,0.0,False,,,,,
+132,aux,AUX 38,stereo,0.0,False,,,,,
+133,aux,AUX 39,stereo,-0.69,False,,,,,
+134,aux,AUX 40,stereo,0.0,False,,,,,
+135,aux,AUX 42,stereo,-0.83,False,,,,,
+136,group,GRP 01,mono,0.0,False,,,,,0
+137,group,GRP 02,LCR,1.9,False,,,,,0
+138,group,GRP 03,LCR,1.38,False,,,,,0
+139,group,GRP 04,LCR,-2.22,False,,,,,0
+140,group,GRP 05,LCR,0.0,False,,,,,0
+141,group,GRP 06,mono,-0.28,False,,,,,0
+142,group,GRP 07,LCRS (?),0.0,False,,,,,0
+143,group,GRP 08,stereo,0.0,False,,,,,0
+144,group,GRP 09,mono,-0.14,False,,,,,0
+145,group,GRP 10,mono,0.18,False,,,,,0
+146,group,GRP 11,mono,0.18,False,,,,,0
+147,group,GRP 12,mono,0.0,False,,,,,0
+148,group,GRP 13,mono,-0.28,False,,,,,0
+149,group,GRP 14,mono,0.0,False,,,,,0
+150,group,GRP 15,mono,-0.14,False,,,,,0
+151,group,GRP 16,mono,0.0,False,,,,,0
+152,group,GRP 17,mono,0.0,False,,,,,0
+198,control group,CG 01,mono,-1.11,False,,,,,
+199,control group,CG 02,mono,-1.94,False,,,,,
+200,control group,CG 03,mono,0.69,False,,,,,
+201,control group,CG 04,mono,2.07,False,,,,,
+202,control group,CG 05,mono,-1.94,False,,,,,
+203,control group,CG 06,mono,-1.94,False,,,,,
+204,control group,CG 07,mono,-150.0,True,,,,,
+205,control group,CG 08,mono,-0.69,False,,,,,
+206,control group,CG 09,mono,0.0,False,,,,,
+207,control group,CG 10,mono,0.0,False,,,,,
+208,control group,CG 11,mono,-150.0,False,,,,,
+209,control group,CG 12,mono,0.18,False,,,,,
+210,control group,CG 13,mono,-1.94,False,,,,,
+211,control group,CG 14,mono,-150.0,False,,,,,
+212,control group,CG 15,mono,-0.97,False,,,,,
+213,control group,CG 16,mono,-1.39,False,,,,,
+214,control group,CG 17,mono,-1.25,False,,,,,
+215,control group,CG 18,mono,-1.25,False,,,,,
+216,control group,CG 19,mono,2.42,False,,,,,
+217,control group,CG 20,mono,0.0,False,,,,,
+231,matrix in,MTXIN 01,mono,,,,,group6:7 GRP 07,-,
+232,matrix in,MTXIN 02,mono,,,,,group6:7 GRP 07,-,
+233,matrix in,MTXIN 03,mono,,,,,group6:7 GRP 07,-,
+234,matrix in,MTXIN 04,mono,,,,,group6:7 GRP 07,-,
+235,matrix in,MTXIN 05,mono,,,,,group6:1 GRP 01,-,
+236,matrix in,MTXIN 06,mono,,,,,-,-,
+237,matrix in,MTXIN 07,mono,,,,,aux5:39 AUX 39,-,
+238,matrix in,MTXIN 08,mono,,,,,aux5:39 AUX 39,-,
+239,matrix in,MTXIN 09,mono,,,,,solo11:2 SOLO 02,-,
+240,matrix in,MTXIN 10,mono,,,,,solo11:2 SOLO 02,-,
+241,matrix in,MTXIN 11,mono,,,,,solo11:1 SOLO 01,-,
+242,matrix in,MTXIN 12,mono,,,,,solo11:1 SOLO 01,-,
+243,matrix in,MTXIN 13,mono,,,,,-,-,
+244,matrix in,MTXIN 14,mono,,,,,-,-,
+245,matrix in,MTXIN 15,mono,,,,,group6:17 GRP 17,-,
+246,matrix in,MTXIN 16,mono,,,,,group6:16 GRP 16,-,
+247,matrix in,MTXIN 17,mono,,,,,group6:15 GRP 15,-,
+248,matrix in,MTXIN 18,mono,,,,,group6:14 GRP 14,-,
+249,matrix in,MTXIN 19,mono,,,,,group6:13 GRP 13,-,
+250,matrix in,MTXIN 20,mono,,,,,group6:12 GRP 12,-,
+251,matrix in,MTXIN 21,mono,,,,,group6:11 GRP 11,-,
+252,matrix in,MTXIN 22,mono,,,,,group6:10 GRP 10,-,
+253,matrix in,MTXIN 23,mono,,,,,group6:9 GRP 09,-,
+254,matrix in,MTXIN 24,mono,,,,,group6:6 GRP 06,-,
+255,matrix out,MTX 01,mono,0.0,False,,,,,
+256,matrix out,MTX 02,mono,0.0,False,,,,,
+257,matrix out,MTX 03,mono,0.0,False,,,,,
+258,matrix out,MTX 04,mono,0.0,False,,,,,
+259,matrix out,MTX 05,mono,0.0,False,,,,,
+260,matrix out,MTX 06,mono,-1.67,False,,,,,
+261,matrix out,MTX 07,mono,-1.81,False,,,,,
+262,matrix out,MTX 08,mono,0.0,False,,,,,
+263,matrix out,MTX 09,mono,0.0,False,,,,,
+264,matrix out,MTX 10,mono,0.0,False,,,,,
+265,matrix out,MTX 11,mono,0.0,False,,,,,
+266,matrix out,MTX 12,mono,0.0,False,,,,,
+267,matrix out,MTX 13,mono,0.0,False,,,,,
+268,matrix out,MTX 14,mono,0.0,False,,,,,
+269,matrix out,MTX 15,mono,-150.0,False,,,,,
+270,matrix out,MTX 16,mono,-150.0,False,,,,,
+271,matrix out,MTX 17,mono,-150.0,False,,,,,
+272,matrix out,MTX 18,mono,0.18,False,,,,,
+273,matrix out,MTX 19,mono,0.0,False,,,,,
+274,matrix out,MTX 20,mono,0.0,False,,,,,
+275,matrix out,MTX 21,mono,0.0,False,,,,,
+276,matrix out,MTX 22,mono,0.0,False,,,,,
+277,matrix out,MTX 23,mono,0.0,False,,,,,
+278,matrix out,MTX 24,mono,-0.28,False,,,,,

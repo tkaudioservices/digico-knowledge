@@ -5,7 +5,7 @@ everything else hangs off it.
 
 | Folder | File type | State |
 |--------|-----------|-------|
-| [`ses/`](ses/README.md) | `.ses` session | Reader exists (being brought in). Map partly known. Writing unverified. |
+| [`ses/`](ses/README.md) | `.ses` session | Reader in `tools/ses_reader.py`. Map written, one sample, nothing bench-verified. Writing unverified. |
 | `snapshots/` | snapshot export | Not started |
 | `macros/` | macro export | Not started |
 | `presets/` | channel and FX presets | Not started |

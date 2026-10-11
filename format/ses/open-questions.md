@@ -13,3 +13,14 @@ Things not yet known about the `.ses` format, and the test that would settle eac
 
 Add a row rather than editing one; strike through when settled and link the page that
 records the answer.
+
+Added 2026-10-11, from bringing the first session's notes across:
+
+| # | Question | What would settle it | Status |
+|---|----------|----------------------|--------|
+| 7 | What is the u16 `0x03E0` after every snapshot timestamp? Constant across all 45 in the sample. | Change a per-snapshot setting (crossfade, MIDI, GPO) in the software, save, diff the trailer. | Open. |
+| 8 | What are the 32-byte free-text field and the four 72-byte rows in the snapshot list header (before the first table)? | Edit snapshot-list settings and the snapshot notes in the software, save, diff. | Open. |
+| 9 | What do the `page` byte and the second list in a macro record mean, and how are action types encoded beyond the four seen? | Build macros of each action type in the software, save, diff. | Open. |
+| 10 | What do a fader bank's second label and 16-byte per-fader block control? | Change a bank label, a spill set and a fader's options, save, diff. | Open. |
+| 11 | Which header word is the software version? `0x0786` at 0x22 is the candidate. | Save the same session from two software versions, compare the header. | Open. |
+| 12 | Which of a component's two trailing references links a pool entry to its snapshot, and what is the u32 at +58? | Store one snapshot twice with one change, diff the pool. | Open. |

@@ -7,5 +7,11 @@ What may go here: JSON, CSV and text summaries produced by the reader, after eve
 has been read and either confirmed generic or replaced. Name each set after its origin,
 generically: `sd5-theatre-2025-v1.summary.txt`, not the show.
 
-Nothing here yet. The first sample (an SD5 theatre session, 45 snapshots) exists as
-outputs in a private folder and needs scrubbing before it lands.
+| Set | Origin | Files |
+|-----|--------|-------|
+| `sd5-theatre-2025-v1` | A 2025 SD5 theatre session, 45 snapshots, 100 input channels | `.summary.txt` (reader summary), `.channels.csv` (channel and bus list) |
+
+Both were produced with `tools/ses_reader.py --scrub`, which replaces every channel, bus,
+socket, snapshot, macro, bank and preset name with a neutral label (`IN 01`, `Snap 12`), then
+read through. The equipment words left in (port and panel names such as `RME`, `Waves`,
+`Local 1-8`) describe hardware, not the show.

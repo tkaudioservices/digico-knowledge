@@ -33,10 +33,11 @@ small browser tool that reads a `.ses` file without the file ever leaving your m
 
 ## Status
 
-Started 11 October 2026. The reader that decodes the format (and its notes) was written in an
-earlier session and is being brought in; until then the site offers a structure-agnostic
-explorer: file identity, string recovery, candidate timestamps and a hex view. See
-[`format/ses/README.md`](format/ses/README.md) for what is known so far.
+Started 11 October 2026. The format map from the first reading session is in
+[`format/ses/`](format/ses/README.md) and the reader is `tools/ses_reader.py`; both come from
+one SD5 sample and nothing is bench-verified yet. The site still offers the structure-agnostic
+explorer (file identity, string recovery, candidate timestamps, hex view) until the decoder is
+ported to the browser.
 
 ## Rules in one breath
 
