@@ -10,8 +10,8 @@ Command-line side of the project. Python 3.10+, standard library only.
 | `tests/` | `python3 -m unittest discover -s tools/tests` |
 
 `ses_reader.py` raises `ValueError` with an offset if a file does not walk; `ses_scan.py`
-still works on such a file. The browser decoder in `web/js/ses.js` has not been ported yet;
-until it is, the site shows the scanner's view only.
+still works on such a file. The browser decoder in `web/js/ses.js` mirrors `ses_reader.py`;
+`web/js/ses.test.mjs` holds both to `tests/fixture-session.bin`.
 
 ## Usage
 

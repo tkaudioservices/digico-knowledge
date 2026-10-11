@@ -50,7 +50,7 @@
       <div class="drop__inner">
         <svg class="drop__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <p class="drop__title">Drop a <span class="mono">.ses</span> file</p>
-        <p class="drop__sub">or <button type="button" class="linkish" id="pick">choose one</button> · any file works, the scan is format-agnostic</p>
+        <p class="drop__sub">or <button type="button" class="linkish" id="pick">choose one</button> · SD-series sessions are decoded; any other file still gets the heuristic scan</p>
         <input type="file" id="file" hidden>
       </div>
     </div>
@@ -145,9 +145,14 @@
     </div>
 
     <div class="panel" id="p-structure" role="tabpanel" aria-labelledby="tab-structure" hidden>
-      <pre class="codeblock" id="st-json"></pre>
-      <p class="muted small">This tab renders whatever <code>decode()</code> in <code>web/js/ses.js</code> returns. It grows as
-        the section map is confirmed: offset table, component records, live state, snapshots, banks, macros, patch.</p>
+      <div id="st-view"></div>
+      <details class="raw">
+        <summary>Raw decode output (JSON)</summary>
+        <pre class="codeblock" id="st-json"></pre>
+      </details>
+      <p class="muted small">Decoded with the section map in <code>format/ses/</code>: header, live state, snapshots, fader
+        banks, macros, presets, sockets. Names and values are read straight from the file; what each parameter
+        <em>means</em> is tagged <code>reasoned</code> in the notes until it is checked in the offline software.</p>
     </div>
 
     <div class="panel" id="p-export" role="tabpanel" aria-labelledby="tab-export" hidden>

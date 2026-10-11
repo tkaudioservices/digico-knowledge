@@ -188,3 +188,11 @@ table.data tbody tr:hover { background: var(--mark-hi); }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .001ms !important; } }
 .card:hover { border-color: var(--accent); color: inherit; }
 .card h3 { color: var(--ink); }
+
+/* structure tab */
+.st-head p { margin: 0 0 .3rem; }
+details.st { border-top: 1px solid var(--line); padding: .5rem 0; }
+details.st > summary { cursor: pointer; font-family: var(--font-display); text-transform: uppercase; letter-spacing: .06em; font-size: .85rem; padding: .35rem 0; }
+details.st .tablewrap { margin-top: .5rem; max-height: 50vh; }
+details.raw { margin-top: 1rem; }
+details.raw > summary { cursor: pointer; font-size: .85rem; color: var(--muted); }

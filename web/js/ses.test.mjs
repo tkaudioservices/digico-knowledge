@@ -5,7 +5,7 @@ import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import assert from "node:assert/strict";
-import { scan } from "./ses.js";
+import { scan, decode } from "./ses.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..", "..");
@@ -21,3 +21,37 @@ assert.equal(js.identity.sha256, py.identity.sha256);
 assert.equal(js.identity.head_hex, py.identity.head_hex);
 assert.equal(js.identity.zero_fraction, py.identity.zero_fraction);
 console.log("ses.test: JS and Python scanners agree on the fixture");
+
+// Decoder parity: the browser decoder and tools/ses_reader.py must read the synthetic session
+// fixture (built by tools/tests/test_ses_reader.py) the same way.
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+const sessionFixture = join(root, "tools", "tests", "fixture-session.bin");
+const tmp = mkdtempSync(join(tmpdir(), "ses-parity-"));
+try {
+  const out = join(tmp, "py.json");
+  execFileSync("python3", [join(root, "tools", "ses_reader.py"), sessionFixture, "--json", out], { encoding: "utf8" });
+  const py = JSON.parse(readFileSync(out, "utf8"));
+  const jsd = decode(new Uint8Array(readFileSync(sessionFixture)));
+  assert.equal(jsd.recognised, true, jsd.reason);
+  assert.equal(jsd.session_name, py.session_name);
+  assert.equal(jsd.saved, py.saved);
+  assert.deepEqual(jsd.file.section_offsets, py.file.section_offsets);
+  assert.deepEqual(jsd.file.section_types, py.file.section_types);
+  assert.deepEqual(jsd.objects.map((o) => [o.k, o.idx, o.kind, o.name, o.format, o.ref, o.headline, o.component_types]),
+    py.objects.map((o) => [o.k, o.idx, o.kind, o.name, o.format, o.ref, o.headline, o.components.map((c) => c.type)]), "objects differ");
+  assert.equal(jsd.snapshot_components, py.snapshot_components.length);
+  assert.deepEqual(jsd.snapshots.map((s) => [s.n, s.name, s.saved, s.w, s.objects]),
+    py.snapshots.map((s) => [s.n, s.name, s.saved, s.w, s.objects.length]), "snapshots differ");
+  assert.deepEqual(jsd.presets.map((p) => [p.name, p.category, p.sub, p.kind, p.format, p.saved, p.objects]),
+    py.presets.map((p) => [p.name, p.category, p.sub, p.kind, p.format, p.saved, p.objects.length]), "presets differ");
+  assert.deepEqual(jsd.panels, py.panels);
+  assert.deepEqual(jsd.fader_banks, py.fader_banks, "fader banks differ");
+  assert.deepEqual(jsd.macros, py.macros, "macros differ");
+  assert.deepEqual(jsd.sets, py.sets);
+  assert.deepEqual(jsd.abc_labels, py.abc_labels);
+  assert.equal(jsd.notes, py.notes);
+  console.log("ses.test: JS and Python decoders agree on the session fixture");
+} finally {
+  rmSync(tmp, { recursive: true, force: true });
+}

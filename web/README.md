@@ -16,16 +16,21 @@ assets/           tk Audio Services marks (SVG, from the live site)
 
 ## What it does today
 
-Drop a `.ses` (or any file). The page reads it in the browser, hashes it, recovers strings
-four ways (length-prefixed 8-bit and 32-bit, plain runs, UTF-16), lists doubles that read
-as Delphi `TDateTime` stamps, and shows a hex view you can jump around from any string.
-Everything is labelled heuristic. Nothing is uploaded; there is no server to upload to.
+Drop a `.ses` (or any file). The page reads it in the browser, decodes it if it is an
+SD-series session (Structure tab: channels, busses, snapshots, banks, macros, presets,
+sockets), hashes it, recovers strings four ways (length-prefixed 8-bit and 32-bit, plain
+runs, UTF-16), lists doubles that read as Delphi `TDateTime` stamps, and shows a hex view
+you can jump around from any string. Nothing is uploaded; there is no server to upload to.
 
-## Where the real decoder goes
+## The decoder
 
-`decode()` in `js/ses.js` returns `{recognised:false}` today. The Structure tab renders
-whatever it returns. When the section map from `format/ses/` is confirmed, implement it
-there and in `tools/`, and extend `ses.test.mjs` so the two stay in step.
+`decode()` in `js/ses.js` implements the section map from `format/ses/`: header and offset
+table, live state (objects and their components), the snapshot pool and tables, presets, fader
+banks, macros, sockets and panels. It returns a plain object the Structure tab renders as
+collapsible tables, with the raw JSON behind a disclosure, and `{recognised:false, reason}`
+for anything it cannot walk, in which case the heuristic tabs still apply. It mirrors
+`tools/ses_reader.py` field for field; `ses.test.mjs` decodes `tools/tests/fixture-session.bin`
+with both and compares. Change one, change the other, run the test.
 
 ## Branding
 

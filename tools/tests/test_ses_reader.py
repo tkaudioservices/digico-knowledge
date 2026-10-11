@@ -118,11 +118,20 @@ def build_fixture() -> bytes:
     return bytes(head) + b"".join(sections)
 
 
+FIXTURE = Path(__file__).with_name("fixture-session.bin")
+
+
 class ReaderTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.data = build_fixture()
+        if not FIXTURE.exists():
+            FIXTURE.write_bytes(cls.data)
         cls.ses = ses_reader.Session(cls.data)
+
+    def test_fixture_on_disk_matches_builder(self):
+        """web/js/ses.test.mjs decodes this same file, so the two parsers meet on it."""
+        self.assertEqual(FIXTURE.read_bytes(), self.data)
 
     def test_header(self):
         self.assertEqual(self.ses.model, "SD5")

@@ -20,6 +20,7 @@
 
 # ---- Local scratch ---------------------------------------------------------
 scratch/
+.claude/
 *.local.*
 .banned-names
 notes-private/
