@@ -1,12 +1,19 @@
-/* tk.css — DiGiCo Knowledge. Tokens and rules from tkaudioservices.com/brand-guidelines (Rev A).
-   Paper, sheet, card, ink, muted, line; one red; no blue. Oswald 700 uppercase for display,
-   system sans for everything else, system mono for data. Light and dark. No CDN: the display
-   face is vendored (Oswald, OFL). */
+/* tk.css — DiGiCo Knowledge. Tokens and rules from tkaudioservices.com/brand-guidelines and
+   TK Logo/Brand/tk-tokens.css (Rev A, 11 September 2026; the sheet's later type rule applied:
+   Oswald 700 uppercase for the H1 only, Source Sans 3 for headings, body, UI and tables, the
+   system mono for data). One red, no blue. Light and dark. No CDN: both faces are vendored
+   (Oswald and Source Sans 3, OFL). */
 
 @font-face {
   font-family: "Oswald";
   src: url("../assets/fonts/oswald-700-latin.woff2") format("woff2");
   font-weight: 700; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Source Sans 3";
+  src: url("../assets/fonts/source-sans-3-latin.woff2") format("woff2");
+  font-weight: 200 900; font-style: normal; font-display: swap;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
@@ -31,9 +38,9 @@
   --tk-measure: 64ch;
   --tk-radius: 3px;
   --tk-gutter: clamp(1.1rem, 4vw, 2.5rem);
-  --maxw: 1200px;
+  --maxw: 1080px;
 
-  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-body: "Source Sans 3", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-display: "Oswald", "Archivo Narrow", "Roboto Condensed", "Arial Narrow", Impact, sans-serif;
   --font-mono: "SFMono-Regular", ui-monospace, Menlo, Consolas, "Courier New", monospace;
 }
@@ -41,15 +48,15 @@
 /* dark ground: applies under prefers-color-scheme unless data-theme="light" is set */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #131210; --sheet: #1B1917; --card: #201D19;
-    --ink: #F4F1EA; --muted: #B3A89A; --line: #2E2A25;
-    --red: #E4564B; --red-deep: #F07A70; --hover: #201D19;
+    --paper: #131210; --sheet: #1A1714; --card: #201D19;
+    --ink: #F4F1EA; --muted: #B3A89A; --line: #3A342E;
+    --red: #E4564B; --red-deep: #EA6B63; --pass: #5FC49A; --caution: #D9A25A; --hover: #201D19;
   }
 }
 :root[data-theme="dark"] {
-  --paper: #131210; --sheet: #1B1917; --card: #201D19;
-  --ink: #F4F1EA; --muted: #B3A89A; --line: #2E2A25;
-  --red: #E4564B; --red-deep: #F07A70; --hover: #201D19;
+  --paper: #131210; --sheet: #1A1714; --card: #201D19;
+  --ink: #F4F1EA; --muted: #B3A89A; --line: #3A342E;
+  --red: #E4564B; --red-deep: #EA6B63; --pass: #5FC49A; --caution: #D9A25A; --hover: #201D19;
 }
 
 /* ---- base ---- */
@@ -66,10 +73,9 @@ a:hover { color: var(--red-deep); }
 p { margin: 0 0 .9rem; max-width: var(--tk-measure); }
 code, .mono { font-family: var(--font-mono); font-size: 14px; font-variant-numeric: tabular-nums; }
 code { background: var(--sheet); padding: .05em .35em; border-radius: var(--tk-radius); }
-h1, h2 { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: 0; margin: 0 0 .5rem; }
-h1 { font-size: clamp(30px, 5.4vw, 50px); line-height: 1.05; }
-h2 { font-size: clamp(22px, 3.2vw, 31px); line-height: 1.1; }
-h3 { font-family: var(--font-body); font-weight: 700; font-size: 17px; margin: 0 0 .5rem; }
+h1 { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: 0; font-size: clamp(30px, 5.4vw, 50px); line-height: 1.05; margin: 0 0 .5rem; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: clamp(21px, 3vw, 29px); line-height: 1.15; margin: 0 0 .5rem; }
+h3 { font-family: var(--font-body); font-weight: 600; font-size: 17px; margin: 0 0 .5rem; }
 .kick { color: var(--red); text-transform: uppercase; letter-spacing: .22em; font-size: 11px; font-weight: 600; margin: 0 0 .5rem; }
 .muted { color: var(--muted); }
 .small { font-size: 12px; }
@@ -104,7 +110,7 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
 .drop:hover, .drop:focus-visible { border-color: var(--red); outline: none; }
 .drop.is-over { border-color: var(--red); background: var(--sheet); }
 .drop__icon { width: 36px; height: 36px; margin: 0 auto .6rem; color: var(--red); }
-.drop__title { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: 22px; margin: 0 0 .25rem; }
+.drop__title { font-weight: 600; font-size: 22px; margin: 0 0 .25rem; }
 .drop__sub { color: var(--muted); font-size: 14px; margin: 0; max-width: none; }
 .linkish { background: none; border: 0; padding: 0; color: var(--red); font: inherit; cursor: pointer; text-decoration: underline; }
 .linkish:hover { color: var(--red-deep); }
@@ -127,7 +133,7 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
 @media (min-width: 700px) { .tiles { grid-template-columns: repeat(5, minmax(0, 1fr)); } .tile--wide { grid-column: span 5; } }
 .tile { background: var(--card); border: 1px solid var(--line); border-radius: var(--tk-radius); padding: .65rem .8rem; min-width: 0; }
 .tile__k { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); font-weight: 600; }
-.tile__v { display: block; font-size: 26px; font-family: var(--font-display); font-weight: 700; line-height: 1.15; margin-top: .15rem; font-variant-numeric: tabular-nums; }
+.tile__v { display: block; font-size: 24px; font-weight: 600; line-height: 1.15; margin-top: .15rem; font-variant-numeric: tabular-nums; }
 .tile__v.small { font-size: 12px; word-break: break-all; font-weight: 400; font-family: var(--font-mono); }
 .tile__v.red { color: var(--red); }
 
@@ -199,27 +205,31 @@ details.raw > summary { cursor: pointer; font-size: 12px; color: var(--muted); }
 .flow { display: grid; gap: 1.2rem; }
 @media (min-width: 900px) { .flow { grid-template-columns: 300px 1fr; } }
 .flow__pick { display: flex; flex-direction: column; gap: .6rem; }
-.flow__pick select { font: inherit; font-size: 14px; padding: .4rem .6rem; border: 1px solid var(--line); border-radius: var(--tk-radius); background: var(--card); color: var(--ink); }
+.flow__pick input { font: inherit; font-size: 14px; padding: .4rem .6rem; border: 1px solid var(--line); border-radius: var(--tk-radius); background: var(--card); color: var(--ink); }
 .flow__list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: var(--tk-radius); background: var(--card); max-height: 52vh; overflow: auto; }
 .flow__list li { padding: .3rem .6rem; border-bottom: 1px solid var(--line); font-size: 14px; cursor: pointer; display: flex; justify-content: space-between; gap: .5rem; }
 .flow__list li:hover { background: var(--hover); }
 .flow__list li[aria-selected="true"] { color: var(--red); font-weight: 600; }
 .flow__list li .k { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
 .diagram { background: var(--card); border: 1px solid var(--line); border-radius: var(--tk-radius); padding: .6rem; overflow: auto; }
-.diagram svg { font-family: var(--font-body); }
-.diagram .box { fill: var(--sheet); stroke: var(--ink); stroke-width: 1; }
-.diagram .box.card { fill: var(--card); }
-.diagram .box.off { fill: var(--card); stroke: var(--line); }
-.diagram .lbl { fill: var(--ink); font-size: 12px; }
-.diagram .lbl.small { font-size: 10px; fill: var(--muted); }
-.diagram .lbl.val { font-family: var(--font-mono); font-size: 11px; fill: var(--ink); }
-.diagram .lbl.head { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; fill: var(--muted); }
-.diagram .wire { stroke: var(--ink); stroke-width: 1.2; fill: none; }
-.diagram .wire.send { stroke: var(--red); stroke-width: 1; opacity: .85; }
-.diagram .wire.faint { stroke: var(--line); }
-.diagram .wire.off { stroke: var(--line); stroke-dasharray: 3 3; }
-.diagram .pin { fill: var(--red); }
-.diagram .mute { fill: var(--red); }
+.diagram svg { font-family: var(--font-body); max-width: none; }   /* natural size; the container scrolls */
+.diagram .box { fill: var(--sheet); stroke: var(--muted); stroke-width: .75; }
+.diagram .box.card { fill: var(--card); stroke: var(--line); }
+.diagram .box.hot { fill: var(--sheet); stroke: var(--red); stroke-width: 1.25; }
+.diagram .box.off { fill: var(--card); stroke: var(--line); stroke-dasharray: 3 2; }
+.diagram .lbl { fill: var(--ink); font-size: 14px; font-weight: 600; }
+.diagram .lbl.row { font-weight: 400; font-size: 13px; }
+.diagram .lbl.row.hot { font-weight: 600; fill: var(--red); }
+.diagram .lbl.small { font-size: 12px; font-weight: 400; fill: var(--muted); }
+.diagram .lbl.val, .diagram .val { font-family: var(--font-mono); font-size: 13px; font-weight: 400; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.diagram .lbl.head { font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; fill: var(--red); }
+.diagram .wire { stroke: var(--ink); stroke-width: 1.6; fill: none; stroke-linecap: round; }
+.diagram .wire.send { stroke: var(--red); }
+.diagram .wire.off { stroke: var(--muted); stroke-dasharray: 4 3; }
+.diagram .pin { fill: var(--ink); }
+.diagram .pin.send { fill: var(--red); }
+.diagram .mute { fill: var(--red); font-weight: 600; }
+.diagram .tag { fill: var(--red-deep); font-size: 12px; }
 .legend { display: flex; flex-wrap: wrap; gap: 1rem; font-size: 12px; color: var(--muted); margin: .5rem 0 0; }
 .legend span::before { content: ""; display: inline-block; width: 18px; height: 0; border-top: 2px solid var(--ink); margin-right: .4rem; vertical-align: middle; }
 .legend span.send::before { border-color: var(--red); }

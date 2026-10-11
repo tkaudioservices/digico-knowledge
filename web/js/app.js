@@ -251,88 +251,154 @@ function renderFlow(st) {
   }
 }
 
+// Text metrics for the SVGs: average advance per character at a given size, measured once per
+// face. Boxes are sized to their longest line and long values are wrapped, so nothing runs out
+// of its box or under a wire.
+const measure = (() => {
+  const cache = new Map();
+  return (text, px, mono = false) => {
+    const key = `${mono}:${px}`;
+    if (!cache.has(key)) {
+      const c = document.createElement("canvas").getContext("2d");
+      c.font = `${px}px ${mono ? "SFMono-Regular, Menlo, Consolas, monospace" : "Source Sans 3, system-ui, sans-serif"}`;
+      cache.set(key, c);
+    }
+    return cache.get(key).measureText(text).width;
+  };
+})();
+const wrapText = (text, maxPx, px, mono) => {
+  const words = String(text).split(" ");
+  const lines = [];
+  let line = "";
+  for (const w of words) {
+    const t = line ? `${line} ${w}` : w;
+    if (measure(t, px, mono) <= maxPx || !line) line = t; else { lines.push(line); line = w; }
+  }
+  if (line) lines.push(line);
+  return lines;
+};
+const clip = (text, maxPx, px, mono) => {
+  let t = String(text);
+  if (measure(t, px, mono) <= maxPx) return t;
+  while (t.length > 1 && measure(t + "…", px, mono) > maxPx) t = t.slice(0, -1);
+  return t + "…";
+};
+const T = { title: 12, label: 14, value: 13, row: 13, pad: 10, line: 17 };   // px
+
 function renderStrip(st, o) {
   const d = o.detail, h = o.headline;
   const boxes = [];
+  const add = (t, lines, extra = {}) => boxes.push({ t, l: lines.filter(Boolean), ...extra });
   if (o.kind === 1) {
-    boxes.push({ t: "Input", l: [h.patch_main ?? "unpatched", h.patch_alt && h.patch_alt !== "-" ? `alt ${h.patch_alt}` : ""], off: !h.patch_main || h.patch_main === "-" });
-    boxes.push({ t: "Trim", l: [dB(d.trim_dB)] });
+    add("Input", [h.patch_main && h.patch_main !== "-" ? h.patch_main : "unpatched", h.patch_alt && h.patch_alt !== "-" ? `alt: ${h.patch_alt}` : ""], { off: !h.patch_main || h.patch_main === "-" });
+    add("Trim", [dB(d.trim_dB)]);
   } else {
-    boxes.push({ t: kindName(o.kind), l: [`${feeders(st, o).length} sources`] });
+    add(kindName(o.kind).replace(/ \(.*/, ""), [`${feeders(st, o).length} sources`]);
   }
-  if (d.hpf || d.lpf) boxes.push({ t: "Filters", l: [`HPF ${d.hpf?.on ? hz(d.hpf.hz) : "off"}`, `LPF ${d.lpf?.on ? hz(d.lpf.hz) : "off"}`], off: !(d.hpf?.on || d.lpf?.on) });
-  if (d.eq.length) boxes.push({ t: `EQ ${d.eq.length} band`, l: d.eq.map((b) => `${b.on ? "" : "(off) "}${hz(b.hz)} ${b.gain_dB > 0 ? "+" : ""}${num(b.gain_dB, 1)} dB Q${num(b.q, 1)}`), off: !d.eq.some((b) => b.on && Math.abs(b.gain_dB) > 0.05) });
-  if (d.dyn.length) boxes.push({ t: "Dynamics", l: d.dyn.map((m) => `${m.module + 1}: ${m.on ? "" : "(off) "}thr ${num(m.thr_dB, 1)} dB · ${num(m.ratio, 1)}:1`), off: !d.dyn.some((m) => m.on) });
-  boxes.push({ t: "Fader", l: [dB(h.fader_dB), h.mute ? "MUTED" : ""], mute: h.mute });
-  const W = 150, H = 26 + 14 * Math.max(2, ...boxes.map((b) => b.l.length)), GAP = 34, X0 = 10, Y0 = 36;
+  if (d.hpf || d.lpf) add("Filters", [`HPF ${d.hpf?.on ? hz(d.hpf.hz) : "off"}`, `LPF ${d.lpf?.on ? hz(d.lpf.hz) : "off"}`], { off: !(d.hpf?.on || d.lpf?.on) });
+  if (d.eq.length) add(`EQ · ${d.eq.length} bands`, d.eq.map((b) => `${b.on ? "" : "off · "}${hz(b.hz)}  ${b.gain_dB > 0 ? "+" : ""}${num(b.gain_dB, 1)} dB  Q ${num(b.q, 1)}`), { off: !d.eq.some((b) => b.on && Math.abs(b.gain_dB) > 0.05) });
+  if (d.dyn.length) add("Dynamics", d.dyn.map((m) => `${m.module + 1}: ${m.on ? "" : "off · "}thr ${num(m.thr_dB, 1)} dB  ${num(m.ratio, 1)}:1`), { off: !d.dyn.some((m) => m.on) });
+  add("Fader", [dB(h.fader_dB), h.mute ? "MUTED" : ""], { mute: h.mute });
+
+  // wrap long value lines (patch names) and size each box to its content
+  const MAXW = 300;
+  for (const b of boxes) {
+    b.lines = b.l.flatMap((line) => wrapText(line, MAXW - 2 * T.pad, T.value, true));
+    const widest = Math.max(measure(b.t, T.label), ...b.lines.map((l) => measure(l, T.value, true)));
+    b.w = Math.min(MAXW, Math.ceil(widest) + 2 * T.pad);
+    b.h = T.pad + T.line + b.lines.length * T.line + T.pad - 4;
+  }
+  const H = Math.max(...boxes.map((b) => b.h));
+  const GAP = 36, X0 = 12, Y0 = 34;
   const groups = d.groups.map((g) => ({ name: groupName(st, g), send: false }));
   const sends = d.sends.filter((s) => s.on && s.dB > -149).map((s) => ({ name: auxName(st, s.aux), send: true, label: dB(s.dB) + (s.pre ? " pre" : "") }));
   const outs = [...groups, ...sends];
-  const fanX = X0 + boxes.length * (W + GAP), fanH = Math.max(H, outs.length * 20 + 10);
-  const totalW = fanX + 240, totalH = Y0 + Math.max(H, fanH) + 20;
-  let svg = `<svg viewBox="0 0 ${totalW} ${totalH}" width="${totalW}" height="${totalH}" role="img" aria-label="Signal path of ${esc(o.name)}">`;
-  svg += `<text class="lbl head" x="${X0}" y="18">${esc(o.name)} · ${esc(kindName(o.kind))} ${o.idx + 1} · ${esc(h.format)}</text>`;
+  const ROW = 22;
+  const stripW = boxes.reduce((a, b) => a + b.w, 0) + GAP * (boxes.length - 1);
+  const fanX = X0 + stripW + 64;
+  const fanW = outs.length ? Math.max(...outs.map((r) => measure(r.name, T.row) + (r.label ? measure(r.label, T.value, true) + 12 : 0))) + 24 : 260;
+  const fanH = outs.length * ROW;
+  const totalW = fanX + fanW + 12, totalH = Y0 + Math.max(H, fanH) + 16;
+
+  let wires = "", shapes = "";
+  let x = X0;
+  const xs = [];
   boxes.forEach((b, i) => {
-    const x = X0 + i * (W + GAP), y = Y0;
-    svg += `<rect class="box ${b.off ? "off" : ""}" x="${x}" y="${y}" width="${W}" height="${H}" rx="3"/>`;
-    svg += `<text class="lbl" x="${x + 8}" y="${y + 17}" font-weight="600">${esc(b.t)}</text>`;
-    b.l.filter(Boolean).forEach((line, j) => { svg += `<text class="lbl val ${b.mute ? "mute" : ""}" x="${x + 8}" y="${y + 31 + j * 14}">${esc(line)}</text>`; });
-    if (i < boxes.length - 1) svg += `<line class="wire ${b.off ? "off" : ""}" x1="${x + W}" y1="${y + H / 2}" x2="${x + W + GAP}" y2="${y + H / 2}"/>`;
+    xs.push(x);
+    const y = Y0 + (H - b.h) / 2;
+    shapes += `<rect class="box ${b.off ? "off" : ""}" x="${x}" y="${y}" width="${b.w}" height="${b.h}" rx="6"/>`;
+    shapes += `<text class="lbl" x="${x + T.pad}" y="${y + T.pad + 11}">${esc(b.t)}</text>`;
+    b.lines.forEach((line, j) => { shapes += `<text class="lbl val ${b.mute && line === "MUTED" ? "mute" : ""}" x="${x + T.pad}" y="${y + T.pad + 11 + (j + 1) * T.line}">${esc(line)}</text>`; });
+    if (i < boxes.length - 1) wires += `<line class="wire ${b.off ? "off" : ""}" x1="${x + b.w}" y1="${Y0 + H / 2}" x2="${x + b.w + GAP}" y2="${Y0 + H / 2}"/>`;
+    x += b.w + GAP;
   });
-  const lastX = X0 + (boxes.length - 1) * (W + GAP) + W, midY = Y0 + H / 2;
-  if (!outs.length) svg += `<text class="lbl small" x="${lastX + 12}" y="${midY + 4}">no group routing or active sends</text>`;
+  const last = boxes[boxes.length - 1], lastX = xs[xs.length - 1] + last.w, midY = Y0 + H / 2;
+  const fanY0 = Y0 + Math.max(0, (H - fanH) / 2) + ROW / 2;
+  if (!outs.length) shapes += `<text class="lbl small" x="${lastX + 16}" y="${midY + 4}">no group routing, no active sends</text>`;
   outs.forEach((r, i) => {
-    const y = Y0 + 10 + i * 20;
-    svg += `<path class="wire ${r.send ? "send" : ""}" d="M${lastX} ${midY} C ${lastX + 40} ${midY}, ${fanX - 40} ${y}, ${fanX} ${y}"/>`;
-    svg += `<circle class="pin" cx="${fanX}" cy="${y}" r="2.5"/>`;
-    svg += `<text class="lbl" x="${fanX + 8}" y="${y + 4}">${esc(r.name)}${r.label ? ` <tspan class="lbl val">${esc(r.label)}</tspan>` : ""}</text>`;
+    const y = fanY0 + i * ROW;
+    wires += `<path class="wire ${r.send ? "send" : ""}" d="M${lastX} ${midY} C ${lastX + 36} ${midY}, ${fanX - 36} ${y}, ${fanX} ${y}"/>`;
+    shapes += `<circle class="pin ${r.send ? "send" : ""}" cx="${fanX}" cy="${y}" r="3"/>`;
+    shapes += `<text class="lbl row" x="${fanX + 10}" y="${y + 4.5}">${esc(r.name)}${r.label ? `<tspan class="val" dx="10">${esc(r.label)}</tspan>` : ""}</text>`;
   });
-  svg += "</svg>";
+  const title = `${o.name || "(unnamed)"} · ${kindName(o.kind)} ${o.idx + 1} · ${h.format}`;
+  const svg = `<svg viewBox="0 0 ${totalW} ${totalH}" width="${totalW}" height="${totalH}" role="img" aria-label="Signal path of ${esc(o.name)}">`
+    + `<text class="lbl head" x="${X0}" y="18">${esc(title)}</text>${wires}${shapes}</svg>`;
   const fed = feeders(st, o);
   const fedHtml = o.kind === 5 || o.kind === 6 ? `<p class="small" style="margin:.6rem 0 0">Fed by ${fed.length}: ${esc(fed.slice(0, 40).map((f) => f.obj.name + (f.label ? ` (${f.label})` : "")).join(", "))}${fed.length > 40 ? " …" : ""}</p>` : "";
   return svg + fedHtml;
 }
 
 function renderMixOverview(st, sel) {
+  const inputs = st.objects.filter((o) => o.kind === 1 && o.detail);
+  const groups = groupList(st), auxes = auxList(st);
+  // how many inputs route to each group / send to each aux: shown in the boxes when nothing is selected
+  const feedCount = new Map();
+  for (const o of inputs) {
+    for (const g of o.detail.groups) if (groups[g]) feedCount.set(groups[g], (feedCount.get(groups[g]) ?? 0) + 1);
+    for (const s of o.detail.sends) if (s.on && s.dB > -149 && auxes[s.aux]) feedCount.set(auxes[s.aux], (feedCount.get(auxes[s.aux]) ?? 0) + 1);
+  }
   const cols = [
     { t: "Input channels", items: st.objects.filter((o) => o.kind === 1) },
-    { t: "Groups", items: groupList(st) },
-    { t: "Auxes", items: auxList(st) },
+    { t: "Groups", items: groups },
+    { t: "Auxes", items: auxes },
     { t: "Matrix out", items: st.objects.filter((o) => o.kind === 16) },
   ];
-  const rowH = 14, colW = 190, gap = 60, X0 = 10, Y0 = 30;
-  const maxRows = Math.max(...cols.map((c) => c.items.length));
-  const totalH = Y0 + Math.min(maxRows, 120) * rowH + 20, totalW = X0 + cols.length * (colW + gap);
+  const rowH = 20, boxH = 17, colW = 200, gap = 64, X0 = 12, Y0 = 34, MAXROWS = 120;
+  const maxRows = Math.min(MAXROWS, Math.max(...cols.map((c) => c.items.length)));
+  const totalH = Y0 + maxRows * rowH + 24, totalW = X0 + cols.length * (colW + gap) - gap + 12;
   const pos = new Map();
-  let svg = `<svg viewBox="0 0 ${totalW} ${totalH}" width="${totalW}" height="${totalH}" role="img" aria-label="Mix structure">`;
+  let wires = "", shapes = "";
   cols.forEach((c, ci) => {
     const x = X0 + ci * (colW + gap);
-    svg += `<text class="lbl head" x="${x}" y="18">${esc(c.t)} (${c.items.length})</text>`;
-    c.items.slice(0, 120).forEach((o, i) => {
+    shapes += `<text class="lbl head" x="${x}" y="18">${esc(c.t)} (${c.items.length})</text>`;
+    c.items.slice(0, MAXROWS).forEach((o, i) => {
       const y = Y0 + i * rowH;
-      pos.set(o, { x, y, w: colW });
-      const hot = sel && (o === sel || (sel.detail && ((ci === 1 && sel.detail.groups.includes(i)) || (ci === 2 && sel.detail.sends.some((s) => s.aux === i && s.on && s.dB > -149)))));
-      svg += `<rect class="box ${hot ? "" : "card"}" x="${x}" y="${y}" width="${colW}" height="${rowH - 2}" rx="2"/>`;
-      svg += `<text class="lbl small" x="${x + 4}" y="${y + 9.5}" ${hot ? 'font-weight="600"' : ""}>${esc(o.name) || "(unnamed)"}</text>`;
+      pos.set(o, { x, y, w: colW, h: boxH });
+      const hot = sel && (o === sel || (sel.detail && ((ci === 1 && sel.detail.groups.includes(i)) || (ci === 2 && sel.detail.sends.some((s) => s.aux === i && s.on && s.dB > -149)))
+        || ((sel.kind === 5 || sel.kind === 6) && ci === 0 && feeders(st, sel).some((f) => f.obj === o))));
+      const count = !sel && feedCount.get(o);
+      const countTxt = count ? `${count}` : "";
+      const nameMax = colW - 12 - (countTxt ? measure(countTxt, T.value, true) + 10 : 0);
+      shapes += `<rect class="box ${hot ? "hot" : "card"}" x="${x}" y="${y}" width="${colW}" height="${boxH}" rx="5"/>`;
+      shapes += `<text class="lbl row ${hot ? "hot" : ""}" x="${x + 6}" y="${y + 12.5}">${esc(clip(o.name || "(unnamed)", nameMax, T.row))}</text>`;
+      if (countTxt) shapes += `<text class="lbl val small" x="${x + colW - 6}" y="${y + 12.5}" text-anchor="end">${countTxt}</text>`;
     });
-    if (c.items.length > 120) svg += `<text class="lbl small" x="${x}" y="${Y0 + 120 * rowH + 10}">… ${c.items.length - 120} more</text>`;
+    if (c.items.length > MAXROWS) shapes += `<text class="lbl small" x="${x}" y="${Y0 + MAXROWS * rowH + 12}">… ${c.items.length - MAXROWS} more</text>`;
   });
-  // wires for the selected channel; without a selection, one faint wire per routing to show density
   const wire = (a, b, cls, label) => {
     const pa = pos.get(a), pb = pos.get(b); if (!pa || !pb) return "";
-    const x1 = pa.x + pa.w, y1 = pa.y + (rowH - 2) / 2, x2 = pb.x, y2 = pb.y + (rowH - 2) / 2;
+    const x1 = pa.x + pa.w, y1 = pa.y + pa.h / 2, x2 = pb.x, y2 = pb.y + pb.h / 2;
     return `<path class="wire ${cls}" d="M${x1} ${y1} C ${x1 + gap / 2} ${y1}, ${x2 - gap / 2} ${y2}, ${x2} ${y2}"/>` +
-      (label ? `<text class="lbl val" x="${x2 - 34}" y="${y2 - 2}">${esc(label)}</text>` : "");
+      (label ? `<text class="lbl val tag" x="${x2 - 6}" y="${y2 - 4}" text-anchor="end">${esc(label)}</text>` : "");
   };
-  const inputs = st.objects.filter((o) => o.kind === 1 && o.detail);
   if (sel && sel.detail) {
-    for (const g of sel.detail.groups) svg += wire(sel, groupList(st)[g], "", "");
-    for (const s of sel.detail.sends) if (s.on && s.dB > -149) svg += wire(sel, auxList(st)[s.aux], "send", dB(s.dB));
-    if (sel.kind === 5 || sel.kind === 6) for (const f of feeders(st, sel)) svg += wire(f.obj, sel, sel.kind === 5 ? "send" : "", f.label);
-  } else {
-    for (const o of inputs) { for (const g of o.detail.groups) svg += wire(o, groupList(st)[g], "faint", ""); }
+    for (const g of sel.detail.groups) wires += wire(sel, groups[g], "", "");
+    for (const s of sel.detail.sends) if (s.on && s.dB > -149) wires += wire(sel, auxes[s.aux], "send", dB(s.dB));
+    if (sel.kind === 5 || sel.kind === 6) for (const f of feeders(st, sel)) wires += wire(f.obj, sel, sel.kind === 5 ? "send" : "", f.label);
   }
-  svg += "</svg>";
+  const caption = sel ? "" : `<text class="lbl small" x="${X0}" y="${totalH - 6}">Numbers at the right of a bus: how many inputs route or send to it. Pick a channel for its wires.</text>`;
+  const svg = `<svg viewBox="0 0 ${totalW} ${totalH}" width="${totalW}" height="${totalH}" role="img" aria-label="Mix structure">${wires}${shapes}${caption}</svg>`;
   return `<div class="diagram">${svg}</div>`;
 }
 
