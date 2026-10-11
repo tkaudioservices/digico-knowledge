@@ -91,14 +91,14 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
 }
 .bar__brand { display: flex; align-items: center; gap: .7rem; color: var(--ink); text-decoration: none; min-width: 0; }
 .mark { width: 40px; height: 40px; flex: 0 0 auto; color: var(--ink); }
-.bar__title { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: 20px; white-space: nowrap; }
+.bar__title { font-family: var(--font-body); font-weight: 400; text-transform: uppercase; letter-spacing: .12em; font-size: 17px; white-space: nowrap; color: var(--ink); }
 .bar__nav { display: none; gap: 1.2rem; margin-left: .5rem; }
 .bar__nav a { color: var(--muted); text-decoration: none; font-size: 12px; text-transform: uppercase; letter-spacing: .12em; font-weight: 600; }
 .bar__nav a:hover, .bar__nav a[aria-current="page"] { color: var(--red); }
 .bar__by { margin-left: auto; color: var(--muted); text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: .22em; font-weight: 600; white-space: nowrap; }
 .bar__by:hover { color: var(--red); }
 @media (min-width: 760px) { .bar__nav { display: flex; } }
-@media (max-width: 480px) { .bar__by .bylabel { display: none; } .bar__title { font-size: 17px; } }
+@media (max-width: 480px) { .bar__by .bylabel { display: none; } .bar__title { font-size: 15px; letter-spacing: .08em; } }
 
 /* ---- hero + drop ---- */
 .hero { padding: clamp(2rem, 6vw, 4rem) 0 1.5rem; }
