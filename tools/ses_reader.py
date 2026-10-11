@@ -137,19 +137,32 @@ class Session:
             raise ValueError('not a DiGiCo .ses file')
         self.model = d[11:15].decode('latin1').strip()
         self.format_tag = d[20:22].decode('latin1')
-        # section offset table at 0x100, zero terminated; section type bytes at 0x1a1
+        self.version = u16(d, 0x22)          # software version that wrote the file (header.md)
+        first = u16(d, 0x20)                 # offset of section 0; the offset table starts with it
+        self.table_off = next((t for t in (0x100, 0x80) if first and u32(d, t) == first), None)
+        if self.table_off is None:
+            raise ValueError(f'no section offset table found (first section at 0x{first:x})')
         offs = []
-        o = 0x100
+        o = self.table_off
         while u32(d, o):
             offs.append(u32(d, o))
             o += 4
         self.offs = offs
-        self.types = list(d[0x1a1:0x1a1 + len(offs) - 2])
-        self.header_words = [u16(d, i) for i in range(0x1a, 0x100, 2)]
-        self.sample_rate = f32(d, 0x77)
+        # one type byte per section after section 0, at table + 0xa1
+        self.types = list(d[self.table_off + 0xa1:self.table_off + 0xa1 + len(offs) - 2])
+        self.by_type = {}
+        for i, t in enumerate(self.types):
+            self.by_type.setdefault(t, i + 1)
+        self.header_words = [u16(d, i) for i in range(0x1a, self.table_off, 2)]
+        self.sample_rate = f32(d, 0x77) if self.table_off == 0x100 else f32(d, 0x5f)
+        self.warnings = []
         self.parse_all()
 
-    def sec(self, i):
+    def sec(self, t):
+        """Section bounds by listed type byte (int) or by index for section 0."""
+        i = t if t == 0 else self.by_type.get(t)
+        if i is None:
+            raise KeyError(f'no section of type 0x{t:02x} in this file')
         return self.offs[i], self.offs[i + 1]
 
     # -- section 0: session name
@@ -160,7 +173,7 @@ class Session:
     # -- section 6: live state (objects with inline components)
     def parse_live(self):
         d = self.d
-        s, e = self.sec(6)
+        s, e = self.sec(0xd3)
         assert d[s:s + 2] == b'\xd3\x00'
         nobj = u32(d, s + 2)
         p = s + 6
@@ -183,7 +196,7 @@ class Session:
     # -- section 5: snapshots: flat component list, then one table + trailer per snapshot
     def parse_snapshots(self):
         d = self.d
-        s, e = self.sec(5)
+        s, e = self.sec(0xd2)
         assert d[s:s + 2] == b'\xd2\x00'
         ncomp = u32(d, s + 4)
         p = s + 8
@@ -226,7 +239,7 @@ class Session:
         then u16-length name, category and sub-label strings, u16 0x000e, f64 timestamp, 6 bytes.
         Stereo / LCR presets carry one object per leg."""
         d = self.d
-        s, e = self.sec(1)
+        s, e = self.sec(0xdb)
         assert d[s:s + 2] == b'\xdb\x00'
         count = u32(d, s + 2)
         p = s + 6
@@ -261,7 +274,7 @@ class Session:
     # -- section 4: I/O panel names (8-channel socket groups)
     def parse_panels(self):
         d = self.d
-        s, e = self.sec(4)
+        s, e = self.sec(0xc9)
         ln = u32(d, s + 2)
         txt = d[s + 6:s + 6 + ln].decode('latin1', 'replace')
         self.panels = txt.split('\r\n')
@@ -269,7 +282,7 @@ class Session:
     # -- section 7: fader banks (361-byte records)
     def parse_banks(self):
         d = self.d
-        s, e = self.sec(7)
+        s, e = self.sec(0xf3)
         count = u32(d, s + 2)
         p = s + 6
         banks = []
@@ -290,7 +303,7 @@ class Session:
         u32 n2, n2 x (u16 len, data). List 1 holds the button's actions (20-byte records seen);
         list 2 is usually empty (14-byte record seen on 'Global Tap Tempo')."""
         d = self.d
-        s, e = self.sec(17)
+        s, e = self.sec(0xf8)
         count = u32(d, s + 2)
         p = s + 6
         macros = []
@@ -315,7 +328,9 @@ class Session:
             page, slot = d[p + 34], d[p + 35]
             rgb = d[p + 36:p + 39].hex()
             actions, p = reclist(p + 40)
-            extra, p = reclist(p)
+            extra = []
+            if self.version >= 1926:          # the trigger list arrived with V1926 (macros.md)
+                extra, p = reclist(p)
             macros.append({'idx': idx, 'page': page, 'slot': slot, 'name': name, 'rgb': rgb,
                            'actions': actions, 'extra': extra})
         self.macros = macros
@@ -323,23 +338,28 @@ class Session:
     # -- sections 18 / 19 / 20
     def parse_misc(self):
         d = self.d
-        s, e = self.sec(18)
+        s, e = self.sec(0xf9)
         self.sets = [{'name': pstr(d, s + 2 + 20 * j, 16), 'rgb': d[s + 18 + 20 * j:s + 21 + 20 * j].hex()}
                      for j in range((e - s - 2) // 20)]
-        s, e = self.sec(19)
+        s, e = self.sec(0xfa)
         self.abc = [pstr(d, s + 2 + 19 * j, 16) for j in range((e - s - 2) // 19)]
-        s, e = self.sec(20)
+        s, e = self.sec(0xeb)
         self.notes = d[s + 2:e].decode('latin1', 'replace')
 
     def parse_all(self):
-        self.parse_name()
-        self.parse_live()
-        self.parse_snapshots()
-        self.parse_presets()
-        self.parse_panels()
-        self.parse_banks()
-        self.parse_macros()
-        self.parse_misc()
+        defaults = {'name': '', 'live': [], 'flat': [], 'snapshots': [], 'snapshot_list_label': '',
+                    'snapshot_count': 0, 'presets': [], 'panels': [], 'banks': [], 'macros': [],
+                    'sets': [], 'abc': [], 'notes': ''}
+        for k, v in defaults.items():
+            setattr(self, k, v)
+        for step in (self.parse_name, self.parse_live, self.parse_snapshots, self.parse_presets,
+                     self.parse_panels, self.parse_banks, self.parse_macros, self.parse_misc):
+            try:
+                step()
+            except (AssertionError, ValueError, KeyError, IndexError, struct.error) as e:
+                self.warnings.append(f'{step.__name__}: {type(e).__name__}: {e}')
+        if not self.live:
+            raise ValueError('live state did not parse: ' + '; '.join(self.warnings))
         self.saved = max([c['ts'] for o in self.live for c in o['comps']] or [0])
 
     # ------------------------------------------------------------------ convenience views
@@ -379,6 +399,37 @@ class Session:
             on = [i for p, i, fl, raw in snd['params'] if p == 0x02 and struct.unpack('<f', raw)[0] != 0]
             row['sends_on'] = len(on)
         return row
+
+    def channel_detail(self, o):
+        """What the signal-flow view needs: trim, filters, EQ bands, dynamics, sends, group routing.
+        Raw floats, no rounding, so the browser decoder can be held to the same numbers."""
+        det = {'trim_dB': None, 'hpf': None, 'lpf': None, 'eq': [], 'dyn': [], 'sends': [], 'groups': []}
+        inp = self.comp(o, 1)
+        if inp:
+            det['trim_dB'] = pf(inp, 0x01, 0)
+        flt = self.comp(o, 7)
+        if flt:
+            det['lpf'] = {'on': (pf(flt, 0x03, 0) or 0) != 0, 'hz': pf(flt, 0x05, 0)}
+            det['hpf'] = {'on': (pf(flt, 0x03, 1) or 0) != 0, 'hz': pf(flt, 0x05, 1)}
+        eq = self.comp(o, 4)
+        if eq:
+            bands = sorted({i for pid, i, fl, raw in eq['params'] if pid == 0x05})
+            det['eq'] = [{'band': b, 'on': (pf(eq, 0x04, b) or 0) != 0, 'hz': pf(eq, 0x05, b),
+                          'q': pf(eq, 0x06, b), 'gain_dB': pf(eq, 0x07, b)} for b in bands]
+        dyn = self.comp(o, 8)
+        if dyn:
+            mods = sorted({i for pid, i, fl, raw in dyn['params'] if pid == 0x01})
+            det['dyn'] = [{'module': m, 'thr_dB': pf(dyn, 0x01, m), 'ratio': pf(dyn, 0xe1, m),
+                           'on': (pf(dyn, 0xe9, m) or 0) != 0} for m in mods]
+        snd = self.comp(o, 2)
+        if snd:
+            auxes = sorted({i for pid, i, fl, raw in snd['params'] if pid == 0x01})
+            det['sends'] = [{'aux': a, 'dB': pf(snd, 0x01, a), 'on': (pf(snd, 0x02, a) or 0) != 0,
+                             'pre': (pf(snd, 0x04, a) or 0) != 0} for a in auxes]
+        grp = self.comp(o, 3)
+        if grp:
+            det['groups'] = sorted(i for pid, i, fl, raw in grp['params'] if pid == 0x09 and struct.unpack('<f', raw)[0] != 0)
+        return det
 
     def patch_name(self, raw):
         """Input patch value: bytes 00 00 <socket index> <port kind>. Resolves to 'group/socket name'."""
@@ -458,10 +509,12 @@ class Session:
     def summary(self):
         L = []
         w = L.append
-        w(f'Session       : {self.name!r}   console {self.model}   format {self.format_tag}   '
+        w(f'Session       : {self.name!r}   console {self.model}   format {self.format_tag}   V{self.version}   '
           f'{len(self.d):,} bytes   sample rate {self.sample_rate:g}'
           + ('   [names scrubbed]' if getattr(self, 'scrubbed', False) else ''))
         w(f'Last saved    : {tdt(self.saved)}   (newest component timestamp)')
+        for wmsg in self.warnings:
+            w(f'WARNING       : {wmsg}')
         w(f'Objects       : {len(self.live)} live objects, {len(self.flat)} snapshot components, '
           f'{len(self.snapshots)} snapshots, {len(self.presets)} presets, {len(self.banks)} fader banks, '
           f'{len(self.macros)} macros')
@@ -536,14 +589,16 @@ class Session:
                                 'f32': struct.unpack('<f', raw)[0], 'i32': struct.unpack('<i', raw)[0]}
                                for p, i, fl, raw in c['params']]}
         return {
-            'file': {'model': self.model, 'format_tag': self.format_tag, 'size': len(self.d),
+            'file': {'model': self.model, 'format_tag': self.format_tag, 'version': self.version, 'size': len(self.d),
                      'sample_rate': self.sample_rate, 'header_words': self.header_words,
-                     'section_offsets': self.offs, 'section_types': self.types},
+                     'table_offset': self.table_off, 'section_offsets': self.offs, 'section_types': self.types},
+            'warnings': self.warnings,
             'session_name': self.name,
             'saved': tdt(self.saved),
             'objects': [{'k': o['k'], 'idx': o['idx'], 'kind': o['kind'], 'kind_name': kind_name(o['kind']),
                          'name': o['name'], 'format': o['fmt'], 'ref': o['ref'],
                          'headline': self.channel_row(o),
+                         'detail': self.channel_detail(o) if o['kind'] in (1, 5, 6, 7, 10, 15, 16) else None,
                          'components': [comp_json(c) for c in o['comps']]} for o in self.live],
             'snapshot_components': [{'type': c['type'], 'name': c['name'], 'ts': tdt(c['ts']), 'f4': c['f4'],
                                      'ref_a': c['ref_a'], 'ref_b': c['ref'],

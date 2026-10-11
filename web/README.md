@@ -5,13 +5,15 @@ or serve the folder; GitHub Pages serves it from `main` via `.github/workflows/p
 which also copies `../libraries/` in as `libraries/`.
 
 ```
-index.html        one page, tabs
-css/tk.css        tokens from tkaudioservices.com, light and dark
-js/app.js         UI: drop zone, tabs, tables, export
-js/ses.js         the scanner (heuristic) and the decoder seam
+index.html        the reader: drop zone, overview, signal flow, tables, strings, timestamps, hex, export
+format.html       the format map in prose with the five diagrams
+css/tk.css        tokens and rules from tkaudioservices.com/brand-guidelines, light and dark
+js/app.js         UI: intake, tabs, overview tiles, signal-flow SVG, tables, draw.io and CSV exports
+js/ses.js         the scanner (heuristic) and the decoder (mirrors tools/ses_reader.py)
 js/hexview.js     windowed hex dump
-js/ses.test.mjs   parity test against tools/ses_scan.py
-assets/           tk Audio Services marks (SVG, from the live site)
+js/ses.test.mjs   parity tests against tools/ses_scan.py and tools/ses_reader.py
+diagrams/         SVG exports of format/diagrams/*.drawio (tools/export_diagrams.sh)
+assets/           tk Audio Services marks (SVG) and the vendored display face (Oswald 700, OFL)
 ```
 
 ## What it does today
@@ -34,12 +36,21 @@ with both and compares. Change one, change the other, run the test.
 
 ## Branding
 
-Tokens are lifted from the live site's `styles.css`: warm off-white `#fafaf7`, ink
-`#1b1916`, brand red `#b41824` (the `mask-icon` red; the SVG marks still carry their own
-`#be1e2d` ring and `#ed1c24` rules, which is a known loose end in the brand notes), warm
-hairline `#e2ddd2`, dark ground `#131210`. Display type is the condensed system stack the
-main site uses; no webfonts. The mark in the header is inlined so its glyphs take
-`currentColor` and survive dark mode.
+Follows the brand style sheet at tkaudioservices.com/brand-guidelines: paper `#FAFAF7`, sheet
+`#F1EFE8`, card `#FFFFFF`, ink `#1B1916`, muted `#5D574E`, line `#E2DDD2`, the one red `#BE1E2D`
+(`#E4564B` on the dark ground), no blue. Oswald 700 uppercase for display, the system sans for
+body and labels, the system mono for data. Eyebrows track `.22em`, table labels `.12em`,
+headings are not tracked. Notes are ink on sheet with a 3px red rule. Radius 3px. The mark in
+the header is inlined at 40px (the brand minimum) so its glyphs take `currentColor`; the footer
+uses the white knockout lockup on `#131210`. The display face is vendored, not fetched: no CDN.
+
+## Signal flow and draw.io
+
+The Signal flow tab draws the selected channel's path as inline SVG (input socket, trim,
+filters, EQ, dynamics, fader, then group routing in ink and aux sends in red with levels) and a
+mix overview of inputs, groups, auxes and matrix with the selection's wires. Export writes plain
+mxGraph XML (`.drawio`) for the whole mix structure or the selected channel; it opens in draw.io
+desktop or app.diagrams.net. The data comes from `detail` on each object in `decode()`.
 
 ## Local check
 

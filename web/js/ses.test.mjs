@@ -38,8 +38,10 @@ try {
   assert.equal(jsd.saved, py.saved);
   assert.deepEqual(jsd.file.section_offsets, py.file.section_offsets);
   assert.deepEqual(jsd.file.section_types, py.file.section_types);
-  assert.deepEqual(jsd.objects.map((o) => [o.k, o.idx, o.kind, o.name, o.format, o.ref, o.headline, o.component_types]),
-    py.objects.map((o) => [o.k, o.idx, o.kind, o.name, o.format, o.ref, o.headline, o.components.map((c) => c.type)]), "objects differ");
+  assert.deepEqual(jsd.objects.map((o) => [o.k, o.idx, o.kind, o.name, o.format, o.ref, o.headline, o.detail, o.component_types]),
+    py.objects.map((o) => [o.k, o.idx, o.kind, o.name, o.format, o.ref, o.headline, o.detail, o.components.map((c) => c.type)]), "objects differ");
+  assert.equal(jsd.file.version, py.file.version);
+  assert.deepEqual(jsd.warnings, py.warnings);
   assert.equal(jsd.snapshot_components, py.snapshot_components.length);
   assert.deepEqual(jsd.snapshots.map((s) => [s.n, s.name, s.saved, s.w, s.objects]),
     py.snapshots.map((s) => [s.n, s.name, s.saved, s.w, s.objects.length]), "snapshots differ");

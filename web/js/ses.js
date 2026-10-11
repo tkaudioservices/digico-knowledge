@@ -239,32 +239,46 @@ function decodeSession(bytes) {
   if (latin1(bytes, 0, 6) !== "DiGiCo") throw new Error("not a DiGiCo .ses file (no DiGiCo signature in the first bytes)");
   const model = latin1(bytes, 11, 15).trim();
   const format_tag = latin1(bytes, 20, 22);
+  const version = r.u16(0x22);                       // software version that wrote the file
+  const first = r.u16(0x20);                         // offset of section 0, repeated as the table's first entry
+  const table_off = [0x100, 0x80].find((t) => first && r.u32(t) === first);
+  if (table_off === undefined) throw new Error(`no section offset table found (first section at 0x${first.toString(16)})`);
   const offs = [];
-  for (let o = 0x100; r.u32(o) !== 0; o += 4) offs.push(r.u32(o));
-  if (offs.length < 21) throw new Error(`section table too short (${offs.length} entries)`);
-  const sec = (i) => [offs[i], offs[i + 1]];
-  const types = Array.from(bytes.subarray(0x1a1, 0x1a1 + offs.length - 2));
-  const sample_rate = r.f32(0x77);
+  for (let o = table_off; r.u32(o) !== 0; o += 4) offs.push(r.u32(o));
+  if (offs.length < 10) throw new Error(`section table too short (${offs.length} entries)`);
+  // one type byte per section after section 0, at table + 0xa1; sections are found by type, not position
+  const types = Array.from(bytes.subarray(table_off + 0xa1, table_off + 0xa1 + offs.length - 2));
+  const byType = new Map();
+  types.forEach((t, i) => { if (!byType.has(t)) byType.set(t, i + 1); });
+  const sec = (t) => {
+    const i = t === 0 ? 0 : byType.get(t);
+    if (i === undefined) throw new Error(`no section of type 0x${t.toString(16)} in this file`);
+    return [offs[i], offs[i + 1]];
+  };
+  const sample_rate = r.f32(table_off === 0x100 ? 0x77 : 0x5f);
+  const warnings = [];
+  const attempt = (label, fn) => { try { return fn(); } catch (err) { warnings.push(`${label}: ${err.message}`); return null; } };
 
-  // section 0: session name
-  const [session_name] = r.wstr(offs[0] + 2);
+  // session name
+  const session_name = attempt("name", () => r.wstr(offs[0] + 2)[0]) ?? "";
 
-  // section 6: live state
+  // live state (d3)
   const live = [];
-  {
-    const [s] = sec(6);
+  attempt("live", () => {
+    const [s] = sec(0xd3);
     if (!r.bytesAt(s, [0xd3, 0x00])) throw new Error("live-state section does not start with d3 00");
     const nobj = r.u32(s + 2);
     let p = s + 6;
     for (let k = 0; k < nobj; k++) { const o = r.liveObject(p); o.k = k; live.push(o); p = o.end; }
-  }
+  });
+  if (!live.length) throw new Error("live state did not parse: " + warnings.join("; "));
 
-  // section 5: snapshots
+  // snapshots (d2)
   const flat = [];
   const snapshots = [];
   let snapshot_list_label = "", snapshot_count = 0;
-  {
-    const [s, e] = sec(5);
+  attempt("snapshots", () => {
+    const [s, e] = sec(0xd2);
     if (!r.bytesAt(s, [0xd2, 0x00])) throw new Error("snapshot section does not start with d2 00");
     const ncomp = r.u32(s + 4);
     let p = s + 8;
@@ -292,12 +306,12 @@ function decodeSession(bytes) {
       const [name, q2] = r.wstr(q);
       snapshots.push({ n: i + 1, table: t, name, ts: r.f64(q2), w: r.u16(q2 + 8), objs });
     }
-  }
+  });
 
-  // section 1: presets
+  // presets (db)
   const presets = [];
-  {
-    const [s] = sec(1);
+  attempt("presets", () => {
+    const [s] = sec(0xdb);
     if (!r.bytesAt(s, [0xdb, 0x00])) throw new Error("preset section does not start with db 00");
     const count = r.u32(s + 2);
     let p = s + 6;
@@ -311,15 +325,15 @@ function decodeSession(bytes) {
       const ts = r.f64(p + 2); p += 16;
       presets.push({ name, category, sub, kind: objs[0]?.kind ?? null, fmt: objs[0]?.fmt ?? null, ts, objs });
     }
-  }
+  });
 
-  // section 4: panel names
-  const panels = (() => { const [s] = sec(4); const ln = r.u32(s + 2); return latin1(bytes, s + 6, s + 6 + ln).split("\r\n"); })();
+  // panel names (c9)
+  const panels = attempt("panels", () => { const [s] = sec(0xc9); const ln = r.u32(s + 2); return latin1(bytes, s + 6, s + 6 + ln).split("\r\n"); }) ?? [];
 
-  // section 7: fader banks (361-byte records)
+  // fader banks (f3), 361-byte records
   const banks = [];
-  {
-    const [s] = sec(7);
+  attempt("banks", () => {
+    const [s] = sec(0xf3);
     const count = r.u32(s + 2);
     let p = s + 6;
     for (let i = 0; i < count; i++) {
@@ -329,12 +343,12 @@ function decodeSession(bytes) {
       banks.push({ idx: r.u16(p + 2), name: pstr(bytes, p + 4, 16), faders, label: pstr(bytes, p + 311, 16), rgb: hexOf(bytes, p + 327, p + 330) });
       p += reclen;
     }
-  }
+  });
 
-  // section 17: macros
+  // macros (f8); the trigger list after the actions arrived with V1926
   const macros = [];
-  {
-    const [s, e] = sec(17);
+  attempt("macros", () => {
+    const [s, e] = sec(0xf8);
     const count = r.u32(s + 2);
     let p = s + 6;
     const reclist = (p) => {
@@ -350,15 +364,16 @@ function decodeSession(bytes) {
     for (let i = 0; i < count && p + 44 <= e; i++) {
       const m = { idx: r.u16(p), page: bytes[p + 34], slot: bytes[p + 35], name: pstr(bytes, p + 2, 32), rgb: hexOf(bytes, p + 36, p + 39) };
       [m.actions, p] = reclist(p + 40);
-      [m.extra, p] = reclist(p);
+      m.extra = [];
+      if (version >= 1926) [m.extra, p] = reclist(p);
       macros.push(m);
     }
-  }
+  });
 
-  // sections 18, 19, 20
-  const sets = (() => { const [s, e] = sec(18); const out = []; for (let j = 0; j < Math.floor((e - s - 2) / 20); j++) out.push({ name: pstr(bytes, s + 2 + 20 * j, 16), rgb: hexOf(bytes, s + 18 + 20 * j, s + 21 + 20 * j) }); return out; })();
-  const abc_labels = (() => { const [s, e] = sec(19); const out = []; for (let j = 0; j < Math.floor((e - s - 2) / 19); j++) out.push(pstr(bytes, s + 2 + 19 * j, 16)); return out; })();
-  const notes = (() => { const [s, e] = sec(20); return latin1(bytes, s + 2, e); })();
+  // sets (f9), A/B/C labels (fa), notes (eb)
+  const sets = attempt("sets", () => { const [s, e] = sec(0xf9); const out = []; for (let j = 0; j < Math.floor((e - s - 2) / 20); j++) out.push({ name: pstr(bytes, s + 2 + 20 * j, 16), rgb: hexOf(bytes, s + 18 + 20 * j, s + 21 + 20 * j) }); return out; }) ?? [];
+  const abc_labels = attempt("abc", () => { const [s, e] = sec(0xfa); const out = []; for (let j = 0; j < Math.floor((e - s - 2) / 19); j++) out.push(pstr(bytes, s + 2 + 19 * j, 16)); return out; }) ?? [];
+  const notes = attempt("notes", () => { const [s, e] = sec(0xeb); return latin1(bytes, s + 2, e); }) ?? "";
 
   let saved = 0;
   for (const o of live) for (const c of o.comps) if (c.ts > saved) saved = c.ts;
@@ -391,15 +406,39 @@ function decodeSession(bytes) {
     return row;
   };
 
+  const f32v = (raw) => new DataView(raw.buffer, raw.byteOffset, 4).getFloat32(0, true);
+  const idxs = (c, pid) => [...new Set(c.params.filter((p) => p.id === pid).map((p) => p.idx))].sort((a, b) => a - b);
+  const detail = (o) => {
+    const det = { trim_dB: null, hpf: null, lpf: null, eq: [], dyn: [], sends: [], groups: [] };
+    const inp = comp(o, 1);
+    if (inp) det.trim_dB = pf(inp, 0x01, 0);
+    const flt = comp(o, 7);
+    if (flt) {
+      det.lpf = { on: (pf(flt, 0x03, 0) ?? 0) !== 0, hz: pf(flt, 0x05, 0) };
+      det.hpf = { on: (pf(flt, 0x03, 1) ?? 0) !== 0, hz: pf(flt, 0x05, 1) };
+    }
+    const eq = comp(o, 4);
+    if (eq) det.eq = idxs(eq, 0x05).map((b) => ({ band: b, on: (pf(eq, 0x04, b) ?? 0) !== 0, hz: pf(eq, 0x05, b), q: pf(eq, 0x06, b), gain_dB: pf(eq, 0x07, b) }));
+    const dyn = comp(o, 8);
+    if (dyn) det.dyn = idxs(dyn, 0x01).map((m) => ({ module: m, thr_dB: pf(dyn, 0x01, m), ratio: pf(dyn, 0xe1, m), on: (pf(dyn, 0xe9, m) ?? 0) !== 0 }));
+    const snd = comp(o, 2);
+    if (snd) det.sends = idxs(snd, 0x01).map((a) => ({ aux: a, dB: pf(snd, 0x01, a), on: (pf(snd, 0x02, a) ?? 0) !== 0, pre: (pf(snd, 0x04, a) ?? 0) !== 0 }));
+    const grp = comp(o, 3);
+    if (grp) det.groups = grp.params.filter((p) => p.id === 0x09 && f32v(p.raw) !== 0).map((p) => p.idx).sort((a, b) => a - b);
+    return det;
+  };
+  const DETAIL_KINDS = new Set([1, 5, 6, 7, 10, 15, 16]);
+
   const counts = {};
   for (const o of live) { const k = kindName(o.kind); counts[k] = (counts[k] ?? 0) + 1; }
 
   return {
     recognised: true,
-    file: { model, format_tag, size: bytes.length, sample_rate, section_offsets: offs, section_types: types },
+    file: { model, format_tag, version, size: bytes.length, sample_rate, table_offset: table_off, section_offsets: offs, section_types: types },
+    warnings,
     session_name, saved: tdt(saved), counts,
     objects: live.map((o) => ({ k: o.k, idx: o.idx, kind: o.kind, kind_name: kindName(o.kind), name: o.name, format: o.fmt, ref: o.ref,
-      headline: headline(o), component_types: o.comps.map((c) => c.type) })),
+      headline: headline(o), detail: DETAIL_KINDS.has(o.kind) ? detail(o) : null, component_types: o.comps.map((c) => c.type) })),
     snapshot_components: flat.length,
     snapshot_list_label, snapshot_count,
     snapshots: snapshots.map((s) => ({ n: s.n, name: s.name, saved: tdt(s.ts), w: s.w, objects: s.objs.length })),

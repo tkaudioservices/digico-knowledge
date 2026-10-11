@@ -16,6 +16,13 @@ Read first, in this order:
 - Changes to the parser belong in both places: `web/js/ses.js` (browser) and `tools/`
   (command line). Keep their outputs in step; `tools/tests/` pins the shared heuristics.
 - The site must work from `file://` as well as from GitHub Pages: relative paths only.
+- Styling follows tkaudioservices.com/brand-guidelines (tokens in `web/css/tk.css`). One red, no
+  blue, Oswald 700 uppercase for display, nothing fetched from a CDN.
+- Diagrams: edit `tools/make_diagrams.py` (or the `.drawio` by hand), then run
+  `tools/export_diagrams.sh` so `web/diagrams/*.svg` match. Keep labels plain text with explicit
+  line breaks; wrapped or HTML labels make draw.io rasterise the export.
+- A session file's names never appear in the repo even when the file is only used for testing;
+  the survey in `format/versions.md` describes files by console, version and count only.
 
 ## End-of-session filing
 

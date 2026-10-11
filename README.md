@@ -33,11 +33,13 @@ small browser tool that reads a `.ses` file without the file ever leaving your m
 
 ## Status
 
-Started 11 October 2026. The format map from the first reading session is in
-[`format/ses/`](format/ses/README.md); the same decoder runs in `tools/ses_reader.py` and in the
-site's `web/js/ses.js`, held to one fixture by `web/js/ses.test.mjs`. Everything comes from one
-SD5 sample and nothing is bench-verified yet. The structure-agnostic explorer (file identity, string
-recovery, candidate timestamps, hex view) stays alongside for files the decoder does not recognise.
+Started 11 October 2026. The format map is in [`format/ses/`](format/ses/README.md) and, with
+diagrams, on the site's [Format page](https://tkaudioservices.github.io/digico-knowledge/format.html).
+One decoder runs in `tools/ses_reader.py` and in the site's `web/js/ses.js`, held to one fixture
+by `web/js/ses.test.mjs`; it reads SD5, SD7, SD8 and SD9 sessions from software V760 to V1926
+(format revisions vA to vK), found by surveying an archive of 135 files. The site shows a decoded
+overview, a signal-flow view per channel, tables, and exports to draw.io, CSV and JSON. Nothing is
+bench-verified yet: structure is read from files, parameter meanings are inferred.
 
 ## Rules in one breath
 

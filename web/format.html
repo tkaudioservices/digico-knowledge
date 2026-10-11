@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The .ses format — DiGiCo Knowledge</title>
+<meta name="description" content="How a DiGiCo SD-series .ses session file is laid out: header, offset table, component records, live state, snapshots, fader banks, macros, presets, patch. With diagrams.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/oswald-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/tk.css">
+</head>
+<body>
+
+<header class="bar">
+  <a class="bar__brand" href="./" aria-label="DiGiCo Knowledge home">
+    <svg class="mark" viewBox="0 0 1400 1400" aria-hidden="true" focusable="false">
+      <defs>
+        <path id="tk-t" d="M.18261719 .37304688V0H.072753909V.37304688H.025878907V.47558595H.072753909V.64990237H.18261719V.47558595H.2680664V.37304688H.18261719Z"/>
+        <path id="tk-k" d="M.17919922 .82470706V.32177735L.33398438 .47558595H.4814453L.27490235 .2758789 .49658204 0H.3540039L.19677735 .2006836 .17919922 .18310547V0H.06933594V.82470706H.17919922Z"/>
+      </defs>
+      <use href="#tk-t" transform="matrix(1125.5385,0,0,-1125.5385,273.832,1048.8858)" fill="currentColor"/>
+      <use href="#tk-k" transform="matrix(1125.5385,0,0,-1125.5385,581.104,1048.8858)" fill="currentColor"/>
+      <path transform="matrix(1,0,0,-1,1304.9024,699.9996)" stroke-width="60" fill="none" stroke="var(--red)" d="M0 0C0-334.079-270.824-604.903-604.902-604.903-938.98-604.903-1209.805-334.079-1209.805 0-1209.805 334.078-938.98 604.902-604.902 604.902-270.824 604.902 0 334.078 0 0Z"/>
+    </svg>
+    <span class="bar__title">DiGiCo Knowledge</span>
+  </a>
+  <nav class="bar__nav" aria-label="Sections">
+    <a href="./#reader">Reader</a>
+    <a href="format.html" aria-current="page">Format</a>
+    <a href="./#libraries">Libraries</a>
+    <a href="https://github.com/tkaudioservices/digico-knowledge/tree/main/protocols" rel="noopener">Protocols</a>
+    <a href="https://github.com/tkaudioservices/digico-knowledge" rel="noopener">Repository</a>
+  </nav>
+  <a class="bar__by" href="https://tkaudioservices.com" rel="noopener"><span class="bylabel">Made by</span> tk Audio Services</a>
+</header>
+
+<main class="wrap prose">
+
+  <section class="hero">
+    <p class="kick">Format · the <span class="mono">.ses</span> session file</p>
+    <h1>How a session file goes together.</h1>
+    <p class="lede">Worked out from 135 session files written by SD5, SD7, SD8 and SD9 consoles between 2013 and
+      2025, software V760 to V1926. Nothing here comes from DiGiCo. Every claim in the
+      <a href="https://github.com/tkaudioservices/digico-knowledge/tree/main/format/ses" rel="noopener">notes</a> carries how it was
+      learnt and how sure it is; the structure is read from files, the meaning of parameters is inferred and still to be
+      checked in the offline software.</p>
+  </section>
+
+  <h2 id="shape">1. The shape of the file</h2>
+  <p>Plain binary. No compression, no container, no checksum found. Length-prefixed strings and dates counted from 30 December
+    1899 as doubles, which is how an Object Pascal program writes its records. A 26-byte signature names the maker, the console,
+    the file type and a format revision letter; a table of offsets points at the sections; a list of type bytes says what each
+    section is.</p>
+  <figure class="figure">
+    <div class="diagram"><img src="diagrams/file-layout.svg" alt="The sections of a .ses file in order: signature, header words, offset table, type list, then presets, panels, snapshots, live state, fader banks, macros and the small sections" width="620" loading="lazy"></div>
+    <figcaption><b>Figure 1.</b> A file end to end. The red boxes are the two things a reader must get right: the table can be at
+      0x80 (before V929) or 0x100, and sections are found by their listed type, never by position.</figcaption>
+  </figure>
+
+  <h2 id="header">2. Header</h2>
+  <table>
+    <tr><th>Offset</th><th>Field</th><th>Reading</th></tr>
+    <tr><td class="mono">0x00</td><td class="mono">DiGiCo     SD5 .SES vK   \r</td><td>maker, console at 0x0B, file type, format tag at 0x14</td></tr>
+    <tr><td class="mono">0x20</td><td>u16</td><td>offset of section 0; also the first entry of the offset table, which is how the table is found</td></tr>
+    <tr><td class="mono">0x22</td><td>u16</td><td>the software version that wrote the file: 760, 929, 987, 1280, 1455, 1528, 1926 seen, each paired with one format tag</td></tr>
+    <tr><td class="mono">0x26</td><td>u16</td><td>input channel count (100 in the SD5 sample)</td></tr>
+    <tr><td class="mono">0x77 / 0x5F</td><td>f32</td><td>sample rate; at 0x5F when the table is at 0x80</td></tr>
+    <tr><td class="mono">0x100 / 0x80</td><td>u32 × n, 0</td><td>section offsets; the last equals the file length</td></tr>
+    <tr><td class="mono">table + 0xA1</td><td>u8 × (n − 1)</td><td>section types: 23 in vA–vC, 25 in vF–vG, 26 in vH, 27 in vK</td></tr>
+  </table>
+
+  <h2 id="component">3. The component record</h2>
+  <p>Every processing block on every channel, bus, socket, FX unit and graphic EQ is one record with one layout, in the live
+    state, in the presets and in the snapshot pool. 17,567 of them in the SD5 sample, 3,000 to 12,000 in the others, all walking
+    the same way.</p>
+  <figure class="figure">
+    <div class="diagram"><img src="diagrams/component-record.svg" alt="Fields of a component record: marker, type, 32-byte name, timestamp, parameter count, flags, parameter records, two references" width="700" loading="lazy"></div>
+    <figcaption><b>Figure 2.</b> One component. A parameter record is eight bytes: id, the component type again, an index (band,
+      send, module or leg), a flag, and a four-byte value that is an f32 for continuous controls.</figcaption>
+  </figure>
+  <p>Parameters identified so far, all inferred from values: type 12 carries the fader (<span class="mono">0x21</span>, dB, −150 off)
+    and mute (<span class="mono">0x22</span>); type 7 the HPF and LPF (<span class="mono">0x03</span> on, <span class="mono">0x05</span> Hz,
+    index 1 for the high-pass); type 4 the EQ bands (<span class="mono">0x04</span> on, <span class="mono">0x05</span> Hz, <span class="mono">0x06</span> Q,
+    <span class="mono">0x07</span> gain); type 8 two dynamics modules (<span class="mono">0x01</span> threshold, <span class="mono">0xE1</span> ratio);
+    type 2 one send per aux (<span class="mono">0x01</span> level, <span class="mono">0x02</span> on); type 3 one flag per group; type 1
+    the input patch as <span class="mono">00 00 socket group</span>. The full table is in
+    <a href="https://github.com/tkaudioservices/digico-knowledge/blob/main/format/ses/components.md" rel="noopener">components.md</a>.</p>
+
+  <h2 id="objects">4. Objects and the live state</h2>
+  <p>Section <span class="mono">d3</span> is the console as it was saved: one object per channel, bus, socket, FX unit and graphic
+    EQ, each with its components inline and a footer that gives the object's index within its kind, the kind, the name, and the
+    format. The kind numbers are the same ones used by fader bank entries, input patch values and preset objects, which is what
+    makes references inside the file resolvable.</p>
+  <figure class="figure">
+    <div class="diagram"><img src="diagrams/object-model.svg" alt="Object kinds: input channels, auxes, groups, bus legs, control groups, FX units, matrix, graphic EQs, input and output socket groups, with their component counts" width="740" loading="lazy"></div>
+    <figcaption><b>Figure 3.</b> The object model, with counts from the SD5 sample. A channel's name is stored in every one of its
+      components as well as in the footer, so renaming means rewriting fourteen copies.</figcaption>
+  </figure>
+
+  <h2 id="snapshots">5. Snapshots</h2>
+  <p>Snapshots are not copies of the console. Section <span class="mono">d2</span> holds one pool of components, then one table per
+    snapshot that points into the pool by index, then a trailer with the name, the time it was stored and a scope mask.</p>
+  <figure class="figure">
+    <div class="diagram"><img src="diagrams/snapshots.svg" alt="The snapshot pool with tables pointing at shared and changed entries" width="660" loading="lazy"></div>
+    <figcaption><b>Figure 4.</b> Two snapshots sharing an unchanged block and diverging on a changed one. The cue numbers the desk
+      displays have not been found in the file yet; the trailer's variable bytes are the candidate.</figcaption>
+  </figure>
+
+  <h2 id="banks-macros">6. Fader banks, macros, presets</h2>
+  <p><strong>Fader banks</strong> are 361-byte records: a 16-character name, twelve <span class="mono">(index, kind)</span> assignments
+    that resolve to objects, a second label and a colour. <strong>Macros</strong> are a 32-character name, a page, a slot, a colour,
+    then length-prefixed action records; from V1926 a second, usually empty, list follows, which is where the macro triggers that
+    release added most likely live. <strong>Presets</strong> are whole objects (two for a stereo preset, one per leg) followed by a name,
+    a category, a sub-label and a timestamp.</p>
+
+  <h2 id="revisions">7. Format revisions</h2>
+  <p>The tag at 0x14 and the version at 0x22 move together. Across the archive the record layouts have not changed since at least
+    V760: new features add sections or append to records.</p>
+  <figure class="figure">
+    <div class="diagram"><img src="diagrams/revisions.svg" alt="Timeline of format tags v6 to vK with the software version and console models seen for each, and what changed" width="1160" loading="lazy"></div>
+    <figcaption><b>Figure 5.</b> Ten revisions seen. Red marks the ones that changed something a reader must handle. The release
+      list and dates are in <a href="https://github.com/tkaudioservices/digico-knowledge/blob/main/format/versions.md" rel="noopener">versions.md</a>.</figcaption>
+  </figure>
+
+  <h2 id="open">8. What is not known</h2>
+  <ul>
+    <li>Whether the file carries a checksum. Rename one channel with the reader, open it in the offline software.</li>
+    <li>Whether the inferred parameter meanings are right. Set one fader, one send and one HPF to known values, save, diff.</li>
+    <li>Where the snapshot cue numbers are stored.</li>
+    <li>How the output patch is encoded (component type 14, parameter <span class="mono">fe</span>).</li>
+    <li>What the u16 <span class="mono">0x03E0</span> after every snapshot timestamp is, and what the four 72-byte rows before the first table hold.</li>
+  </ul>
+  <div class="note">The full list, each with the test that would settle it, is
+    <a href="https://github.com/tkaudioservices/digico-knowledge/blob/main/format/ses/open-questions.md" rel="noopener">open-questions.md</a>.
+    The diagrams on this page are drawn in draw.io; the sources are in
+    <a href="https://github.com/tkaudioservices/digico-knowledge/tree/main/format/diagrams" rel="noopener">format/diagrams/</a>.</div>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__inner">
+    <a href="https://tkaudioservices.com" rel="noopener"><img src="assets/tk-audio-lockup-light.svg" alt="tk Audio Services" class="foot__logo" width="788" height="192"></a>
+    <p>Audio system design, engineering and programming for productions where it has to work.
+      Based in the UK, working wherever the show is.</p>
+    <p class="foot__fine">© 2026 tk Audio Services Ltd · DiGiCo and SD-series are trademarks of DiGiCo (UK) Ltd; this
+      project is independent and not affiliated. · <a href="https://github.com/tkaudioservices/digico-knowledge/blob/main/LICENSE" rel="noopener">MIT</a></p>
+  </div>
+</footer>
+</body>
+</html>

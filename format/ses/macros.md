@@ -14,12 +14,14 @@ record, variable:
   +36   RGB, then 00              button colour
   +40   u32 n1
         n1 × (u16 length, data)   the actions; every one seen is 20 bytes long
-        u32 n2
+        u32 n2                    from V1926 only
         n2 × (u16 length, data)   a second list; empty on 63 of 64, one 14-byte entry on the other
 ```
 
-*(file-derived, SD5 unknown, 2026-10)*: all 64 walk with this shape, including two
-30-action routing macros.
+*(file-derived, SD5 V1926, 2026-10)*: all 64 walk with this shape, including two
+30-action routing macros. Files written by V760 to V1528 have no `n2` word: the next macro's
+index follows the last action directly. *(file-derived, SD various, 2026-10)*, six files across
+vA to vH. That dates the second list to V1926, the release whose notes add macro triggers.
 
 ## Action records seen
 

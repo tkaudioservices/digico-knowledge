@@ -15,3 +15,6 @@ little-endian unless stated.
 
 [`versions.md`](versions.md) lists the software releases DiGiCo publishes, for the version slot in
 claim tags and for reading a file's header word.
+
+[`diagrams/`](diagrams/) holds the draw.io sources for the figures on the site's Format page;
+`tools/make_diagrams.py` writes them and `tools/export_diagrams.sh` exports the SVGs.

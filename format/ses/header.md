@@ -33,20 +33,29 @@ Mostly zero. The populated words, read as u16:
 
 The float fields sit on odd offsets, so the header is a packed record, not aligned words.
 
-## Section offset table, 0x100
+## Section offset table, 0x100 (0x80 before vB)
 
 A zero-terminated list of u32 file offsets, one per section, in file order. 27 entries in the
-sample; the last entry equals the file length, so each section's size is the gap to the next
-entry. *(file-derived, SD5 unknown, 2026-10)*
+vK sample; the last entry equals the file length, so each section's size is the gap to the next
+entry. *(file-derived, SD5 V1926, 2026-10)*
 
-## Section type list, 0x1A1
+The u16 at 0x20 is the offset of section 0 and is also the table's first entry, which is how
+a reader finds the table: files from vB (V929) onwards keep it at 0x100; vA (V760) and earlier
+keep it at 0x80 with a correspondingly shorter header. *(file-derived, SD various, 2026-10)*,
+seen across SD5, SD7, SD8 and SD9 files; see [`../versions.md`](../versions.md).
 
-One byte per section from section 1 onwards: `db f6 fc c9 d2 d3 f3 d4 e4 d9 e8 ea ec ed dd cf
-f8 f9 fa eb e2 d0 e3 e5 e1 ee`. Each section's first two bytes are its type tag as a u16
-(`db 00` …) and match this list; section 0 carries the tag `00 00`. Where a listed type is
-`d4`, `e4` or `d9` the section in the file starts with other bytes (`27 03`, `80 01`, `46 00`),
-so those three may be sub-typed or the list may be a template rather than a record of what
-was written. *(file-derived, SD5 unknown, 2026-10)*
+## Section type list, table + 0xA1
+
+One byte per section from section 1 onwards, at 0x1A1 when the table is at 0x100 (0x121 when
+it is at 0x80). The vK list: `db f6 fc c9 d2 d3 f3 d4 e4 d9 e8 ea ec ed dd cf f8 f9 fa eb e2
+d0 e3 e5 e1 ee`. Older revisions list fewer types (23 in vA to vC, 25 in vF and vG, 26 in vH),
+so a section's position changes between revisions while its type byte does not. Readers must
+find sections by type. *(file-derived, SD various, 2026-10)*
+
+Each section's first two bytes are usually its type as a u16 (`db 00` …); section 0 carries
+`00 00`. Where a listed type is `d4`, `e4`, `d9`, `f9`, `fa` or `eb` the section starts with
+other bytes (`27 03`, `80 01`, `46 00`, `80 02`, `90 03`, `f0 00`), so the list is the
+authority and the leading bytes are not. *(file-derived, SD various, 2026-10)*
 
 ## Sections seen
 

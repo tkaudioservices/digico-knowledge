@@ -6,6 +6,8 @@ Command-line side of the project. Python 3.10+, standard library only.
 |--------|---------|
 | `ses_reader.py` | The format reader: header, live state, snapshots, fader banks, macros, presets, sockets. Summary, `--json`, `--csv`, `--scrub` for publishable output, experimental `--rename`. Follows `format/ses/`. |
 | `ses_scan.py` | Structure-agnostic scan of any binary: identity, recovered strings (plain runs, length-prefixed, UTF-16), candidate `TDateTime` stamps. Mirrors `web/js/ses.js` so the site and the CLI agree. The fallback for files the reader does not recognise. |
+| `make_diagrams.py` | Writes `format/diagrams/*.drawio` (plain mxGraph XML, editable in draw.io) for the format pages and the site. |
+| `export_diagrams.sh` | Exports those to `web/diagrams/*.svg` with the draw.io desktop app. Labels are plain text with explicit breaks, so the SVGs stay real text at a few KB. |
 | `check_repo.py` | The commit gate: no console files tracked, library JSON valid and indexed, optional banned-word scan, `--tags` for the re-verify list. |
 | `tests/` | `python3 -m unittest discover -s tools/tests` |
 
@@ -21,6 +23,7 @@ python3 tools/ses_reader.py path/to/file.ses --scrub --csv out.csv   # publishab
 python3 tools/ses_scan.py path/to/file.ses            # heuristic summary
 python3 tools/ses_scan.py path/to/file.ses --json     # same, as JSON
 python3 tools/ses_scan.py path/to/file.ses --strings  # just the strings, one per line
+python3 tools/make_diagrams.py && tools/export_diagrams.sh   # diagrams
 python3 tools/check_repo.py                            # gate
 python3 tools/check_repo.py --tags                     # re-verify list
 ```

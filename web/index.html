@@ -4,12 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DiGiCo Knowledge — tk Audio Services</title>
-<meta name="description" content="Read a DiGiCo SD-series .ses session file in your browser. Nothing is uploaded. Format notes, console setup protocols and extracted libraries.">
+<meta name="description" content="Read a DiGiCo SD-series .ses session file in your browser: channels, busses, snapshots, banks, macros, patch and signal flow. Nothing is uploaded. Format notes, console setup protocols and extracted libraries.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#131210" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="mask-icon" href="assets/favicon.svg" color="#b41824">
+<link rel="mask-icon" href="assets/favicon.svg" color="#be1e2d">
+<link rel="preload" href="assets/fonts/oswald-700-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/tk.css">
 </head>
 <body>
@@ -23,15 +24,16 @@
       </defs>
       <use href="#tk-t" transform="matrix(1125.5385,0,0,-1125.5385,273.832,1048.8858)" fill="currentColor"/>
       <use href="#tk-k" transform="matrix(1125.5385,0,0,-1125.5385,581.104,1048.8858)" fill="currentColor"/>
-      <path transform="matrix(1,0,0,-1,1304.9024,699.9996)" stroke-width="60" fill="none" stroke="var(--accent)" d="M0 0C0-334.079-270.824-604.903-604.902-604.903-938.98-604.903-1209.805-334.079-1209.805 0-1209.805 334.078-938.98 604.902-604.902 604.902-270.824 604.902 0 334.078 0 0Z"/>
+      <path transform="matrix(1,0,0,-1,1304.9024,699.9996)" stroke-width="60" fill="none" stroke="var(--red)" d="M0 0C0-334.079-270.824-604.903-604.902-604.903-938.98-604.903-1209.805-334.079-1209.805 0-1209.805 334.078-938.98 604.902-604.902 604.902-270.824 604.902 0 334.078 0 0Z"/>
     </svg>
     <span class="bar__title">DiGiCo Knowledge</span>
   </a>
   <nav class="bar__nav" aria-label="Sections">
-    <a href="#reader">Reader</a>
+    <a href="#reader" aria-current="page">Reader</a>
+    <a href="format.html">Format</a>
     <a href="#libraries">Libraries</a>
-    <a href="https://github.com/tkaudioservices/digico-knowledge/tree/main/format/ses" rel="noopener">Format</a>
     <a href="https://github.com/tkaudioservices/digico-knowledge/tree/main/protocols" rel="noopener">Protocols</a>
+    <a href="https://github.com/tkaudioservices/digico-knowledge" rel="noopener">Repository</a>
   </nav>
   <a class="bar__by" href="https://tkaudioservices.com" rel="noopener">
     <span class="bylabel">Made by</span> tk Audio Services
@@ -43,14 +45,15 @@
   <section class="hero" id="reader">
     <p class="kick">DiGiCo SD-series · session files</p>
     <h1>Read a <span class="mono">.ses</span> without the console.</h1>
-    <p class="lede">Drop a session file here and see what it holds. The file is read in your
-      browser and goes nowhere: there is no server, nothing is uploaded, nothing is kept.</p>
+    <p class="lede">Drop a session file here and see what it holds: channels, busses, snapshots, banks,
+      macros, patch and signal flow. The file is read in your browser and goes nowhere: there is no
+      server, nothing is uploaded, nothing is kept.</p>
 
     <div class="drop" id="drop" tabindex="0" role="button" aria-label="Drop a .ses file or press to choose one">
       <div class="drop__inner">
         <svg class="drop__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <p class="drop__title">Drop a <span class="mono">.ses</span> file</p>
-        <p class="drop__sub">or <button type="button" class="linkish" id="pick">choose one</button> · SD-series sessions are decoded; any other file still gets the heuristic scan</p>
+        <p class="drop__sub">or <button type="button" class="linkish" id="pick">choose one</button> · SD5, SD7, SD8, SD9 sessions from V760 to V1926 decode; any other file still gets the heuristic scan</p>
         <input type="file" id="file" hidden>
       </div>
     </div>
@@ -60,50 +63,56 @@
   <section class="results" id="results" hidden>
     <div class="results__head">
       <div>
-        <p class="kick">File</p>
+        <p class="kick" id="r-kick">File</p>
         <h2 id="r-name" class="filename">—</h2>
       </div>
       <button type="button" class="btn ghost" id="clear">Clear</button>
     </div>
 
-    <div class="tiles" id="tiles">
-      <div class="tile"><span class="tile__k">Size</span><span class="tile__v" id="t-size">—</span></div>
-      <div class="tile"><span class="tile__k">Names (length-prefixed)</span><span class="tile__v" id="t-pascal">—</span></div>
-      <div class="tile"><span class="tile__k">Printable runs</span><span class="tile__v" id="t-runs">—</span></div>
-      <div class="tile"><span class="tile__k">Candidate stamps</span><span class="tile__v" id="t-dates">—</span></div>
-      <div class="tile"><span class="tile__k">Zero bytes</span><span class="tile__v" id="t-zeros">—</span></div>
-      <div class="tile tile--wide"><span class="tile__k">SHA-256</span><span class="tile__v mono small" id="t-sha">—</span></div>
-    </div>
+    <div class="tiles" id="tiles"></div>
 
     <div class="tabs" role="tablist" aria-label="Views">
       <button role="tab" aria-selected="true" aria-controls="p-overview" id="tab-overview" data-tab="overview">Overview</button>
+      <button role="tab" aria-selected="false" aria-controls="p-flow" id="tab-flow" data-tab="flow">Signal flow</button>
+      <button role="tab" aria-selected="false" aria-controls="p-structure" id="tab-structure" data-tab="structure">Tables</button>
       <button role="tab" aria-selected="false" aria-controls="p-strings" id="tab-strings" data-tab="strings">Strings</button>
       <button role="tab" aria-selected="false" aria-controls="p-dates" id="tab-dates" data-tab="dates">Timestamps</button>
       <button role="tab" aria-selected="false" aria-controls="p-hex" id="tab-hex" data-tab="hex">Hex</button>
-      <button role="tab" aria-selected="false" aria-controls="p-structure" id="tab-structure" data-tab="structure">Structure</button>
       <button role="tab" aria-selected="false" aria-controls="p-export" id="tab-export" data-tab="export">Export</button>
     </div>
 
     <div class="panel" id="p-overview" role="tabpanel" aria-labelledby="tab-overview">
-      <div class="two">
+      <div id="ov-decoded"></div>
+      <div class="two" id="ov-scan">
         <div>
           <h3>First bytes</h3>
           <pre class="codeblock" id="o-head"></pre>
-          <p class="muted small">Session files are plain binary with no container. Whatever sits in the first bytes is the
-            best signature we have until the header page in <code>format/ses/</code> is written.</p>
+          <p class="muted small">The 26-byte signature: maker, console, file type and format revision. The session
+            structure counts and the offset table follow; see <a href="format.html#header">the header</a>.</p>
         </div>
         <div>
-          <h3>Likely names</h3>
-          <p class="muted small">The most frequent length-prefixed strings. In a Delphi-style file these are how channel,
-            bus, snapshot and socket names are stored, so repeats usually mean something real.</p>
+          <h3>Most frequent names</h3>
+          <p class="muted small">Length-prefixed strings, counted. A channel name is stored once per processing
+            block, so a channel with 13 blocks shows 14 times in the live state alone.</p>
           <ol class="chips" id="o-names"></ol>
         </div>
       </div>
-      <div class="note">
-        <strong>Heuristic.</strong> Everything on this page is recovered by pattern, not by a confirmed format map.
-        What is confirmed, and how confident each claim is, lives in
-        <a href="https://github.com/tkaudioservices/digico-knowledge/blob/main/format/ses/README.md" rel="noopener">format/ses</a>.
-      </div>
+      <div class="note" id="ov-note"></div>
+    </div>
+
+    <div class="panel" id="p-flow" role="tabpanel" aria-labelledby="tab-flow" hidden>
+      <div id="flow-view"></div>
+    </div>
+
+    <div class="panel" id="p-structure" role="tabpanel" aria-labelledby="tab-structure" hidden>
+      <div id="st-view"></div>
+      <details class="raw">
+        <summary>Raw decode output (JSON)</summary>
+        <pre class="codeblock" id="st-json"></pre>
+      </details>
+      <p class="muted small">Decoded with the section map in <a href="format.html">Format</a>: header, live state, snapshots, fader
+        banks, macros, presets, sockets. Names and values are read straight from the file; what each parameter
+        <em>means</em> is tagged <code>reasoned</code> in the notes until it is checked in the offline software.</p>
     </div>
 
     <div class="panel" id="p-strings" role="tabpanel" aria-labelledby="tab-strings" hidden>
@@ -122,7 +131,7 @@
       </div>
       <div class="tablewrap">
         <table class="data" id="s-table">
-          <thead><tr><th>Offset</th><th>Len</th><th>Text</th></tr></thead>
+          <thead><tr><th>Offset</th><th class="num">Len</th><th>Text</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -131,10 +140,10 @@
 
     <div class="panel" id="p-dates" role="tabpanel" aria-labelledby="tab-dates" hidden>
       <p class="muted small">Doubles that read as a Delphi <code>TDateTime</code> (days since 30 Dec 1899) between 2005 and 2039
-        with a time of day. Snapshot save times are stored this way. Expect a few false hits.</p>
+        with a time of day. Every processing block and every snapshot carries one. Expect a few false hits.</p>
       <div class="tablewrap">
         <table class="data" id="d-table">
-          <thead><tr><th>Offset</th><th>UTC</th><th>Raw</th></tr></thead>
+          <thead><tr><th>Offset</th><th>Local time</th><th class="num">Raw</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -144,22 +153,17 @@
       <div id="hex"></div>
     </div>
 
-    <div class="panel" id="p-structure" role="tabpanel" aria-labelledby="tab-structure" hidden>
-      <div id="st-view"></div>
-      <details class="raw">
-        <summary>Raw decode output (JSON)</summary>
-        <pre class="codeblock" id="st-json"></pre>
-      </details>
-      <p class="muted small">Decoded with the section map in <code>format/ses/</code>: header, live state, snapshots, fader
-        banks, macros, presets, sockets. Names and values are read straight from the file; what each parameter
-        <em>means</em> is tagged <code>reasoned</code> in the notes until it is checked in the offline software.</p>
-    </div>
-
     <div class="panel" id="p-export" role="tabpanel" aria-labelledby="tab-export" hidden>
       <div class="actions">
-        <button type="button" class="btn" id="x-json">Download scan as JSON</button>
-        <button type="button" class="btn ghost" id="x-strings">Download strings as text</button>
+        <button type="button" class="btn" id="x-json">Decoded JSON</button>
+        <button type="button" class="btn" id="x-csv">Channel list (CSV)</button>
+        <button type="button" class="btn" id="x-drawio">Mix structure (.drawio)</button>
+        <button type="button" class="btn" id="x-drawio-ch">Selected channel (.drawio)</button>
+        <button type="button" class="btn ghost" id="x-strings">Strings (text)</button>
       </div>
+      <p class="muted small">The <code>.drawio</code> files open in draw.io (desktop or app.diagrams.net). The mix structure
+        is one page: sockets, input channels, groups, auxes, matrix. Routing is drawn in ink, aux sends in red with
+        their level. Prune it there; a hundred channels into thirty-six auxes is a dense drawing.</p>
       <div class="note">
         <strong>Before you share an export:</strong> it contains every name in the file. Read it. Show, venue and
         people's names should be scrubbed before anything goes into a public place, including this project's
@@ -188,7 +192,7 @@
       <div>
         <p class="kick">Where to read</p>
         <ul class="links">
-          <li><a href="https://github.com/tkaudioservices/digico-knowledge/blob/main/format/ses/README.md" rel="noopener">The <code>.ses</code> format map</a></li>
+          <li><a href="format.html">The <code>.ses</code> format, with diagrams</a></li>
           <li><a href="https://github.com/tkaudioservices/digico-knowledge/blob/main/format/ses/open-questions.md" rel="noopener">Open questions</a></li>
           <li><a href="https://github.com/tkaudioservices/digico-knowledge/tree/main/protocols" rel="noopener">Console setup protocols</a></li>
           <li><a href="https://github.com/tkaudioservices/digico-knowledge/blob/main/CONVENTIONS.md" rel="noopener">How facts are written</a></li>

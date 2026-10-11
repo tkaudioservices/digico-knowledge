@@ -106,6 +106,8 @@ def build_fixture() -> bytes:
 
     head = bytearray(0x1C8)
     head[0:26] = b"DiGiCo     SD5 .SES vK   \r"
+    head[0x20:0x22] = struct.pack("<H", 0x1C8)   # first section offset, repeated as the table's first entry
+    head[0x22:0x24] = struct.pack("<H", 1926)    # software version; macros carry a trigger list from V1926
     head[0x77:0x7B] = f32(48000.0)
     offsets, pos = [], 0x1C8
     for sec in sections:
@@ -136,6 +138,9 @@ class ReaderTests(unittest.TestCase):
     def test_header(self):
         self.assertEqual(self.ses.model, "SD5")
         self.assertEqual(self.ses.format_tag, "vK")
+        self.assertEqual(self.ses.version, 1926)
+        self.assertEqual(self.ses.table_off, 0x100)
+        self.assertEqual(self.ses.warnings, [])
         self.assertEqual(len(self.ses.offs), 28)
         self.assertEqual(self.ses.offs[-1], len(self.data))
         self.assertEqual(self.ses.sample_rate, 48000.0)
