@@ -34,3 +34,10 @@ Eighteen data bytes after the length word. Readings are *(reasoned, SD5 unknown,
 
 The 4 bytes after `90 00` look like a pointer and vary; ignore them when comparing. The
 `page` byte groups macros that share a colour scheme, so it may be the macro page or bank.
+
+## Cross-reference
+
+V1926 added macro triggers (fader threshold, meter level, solo, snapshot recall) and MacroOSC.
+*(documented, SD V1926, 2026-10)* per the release notes on DiGiCo's support site. The sample was
+written by V1926, so the second list in a macro record is a candidate home for those triggers; the
+one macro that uses it is the global tap tempo. *(reasoned, SD V1926, 2026-10)*

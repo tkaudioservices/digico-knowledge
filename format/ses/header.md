@@ -24,7 +24,7 @@ Mostly zero. The populated words, read as u16:
 | Offset | Value | Reading |
 |--------|-------|---------|
 | 0x20 | 0x01C8 | Offset of section 0, the session name. Matches the first entry of the offset table. |
-| 0x22 | 0x0786 | 1926. Possibly a software or format build number. *(reasoned, SD5 unknown, 2026-10)* |
+| 0x22 | 0x0786 | 1926. Matches DiGiCo's release V1926 (November 2024), which was the console release when this file was saved in November 2025; read as the software version that wrote the file. One file, so still *(reasoned, SD V1926, 2026-10)*. See [`../versions.md`](../versions.md). |
 | 0x24 | 0x1008 | Unknown. |
 | 0x26 | 0x0064 | 100, the number of input channels in this session's structure. *(reasoned, SD5 unknown, 2026-10)* |
 | 0x38–0x6E | small values (7, 29, 11, 1, 4, 1, 9, 6 …) | Session structure counts, probably busses and formats. *(reasoned, SD5 unknown, 2026-10)* |

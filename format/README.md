@@ -12,3 +12,6 @@ everything else hangs off it.
 
 Each page is a set of tagged claims per `CONVENTIONS.md`. Offsets in hex, sizes in decimal,
 little-endian unless stated.
+
+[`versions.md`](versions.md) lists the software releases DiGiCo publishes, for the version slot in
+claim tags and for reading a file's header word.
