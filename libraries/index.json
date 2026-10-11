@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "updated": "2026-10-11",
+  "libraries": [
+    {
+      "id": "example-macro-set",
+      "kind": "macros",
+      "title": "Example macro set",
+      "file": "examples/example-macro-set.json",
+      "summary": "A placeholder showing the shape of a library. Replace with real extractions."
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+name: checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Repo gate (no console files, libraries valid)
+        run: python3 tools/check_repo.py
+      - name: Python tests
+        run: python3 -m unittest discover -s tools/tests -v
+      - name: JavaScript syntax
+        run: for f in web/js/*.js web/js/*.mjs; do node --check "$f"; done
+      - name: Scanner parity (browser vs CLI)
+        run: node web/js/ses.test.mjs
+      - name: No console file types anywhere in the tree
+        run: |
+          if git ls-files | grep -iE '\.(ses|snap|mac|pre|prs|dgs)$'; then
+            echo "console file committed"; exit 1; fi

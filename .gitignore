@@ -1,0 +1,51 @@
+# ---- DiGiCo session files -------------------------------------------------
+# Raw console files carry show, venue and client names. They never go in a
+# public repo. Scrubbed derivatives (JSON, CSV, summaries) live in samples/
+# and must pass the checks in CONVENTIONS.md before they are committed.
+*.ses
+*.SES
+*.snap
+*.SNAP
+*.mac
+*.pre
+*.prs
+*.dgs
+*.zip
+*.7z
+
+# De-identified sample outputs are allowed only in samples/
+!samples/**/*.json
+!samples/**/*.csv
+!samples/**/*.txt
+
+# ---- Local scratch ---------------------------------------------------------
+scratch/
+*.local.*
+.banned-names
+notes-private/
+
+# ---- Python ----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# ---- Node (only if a build step ever appears) -------------------------------
+node_modules/
+npm-debug.log*
+
+# ---- Editors / OS ----------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*~
+
+# ---- Site build output ------------------------------------------------------
+_site/

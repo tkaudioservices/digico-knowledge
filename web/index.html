@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DiGiCo Knowledge — tk Audio Services</title>
+<meta name="description" content="Read a DiGiCo SD-series .ses session file in your browser. Nothing is uploaded. Format notes, console setup protocols and extracted libraries.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131210" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="mask-icon" href="assets/favicon.svg" color="#b41824">
+<link rel="stylesheet" href="css/tk.css">
+</head>
+<body>
+
+<header class="bar">
+  <a class="bar__brand" href="./" aria-label="DiGiCo Knowledge home">
+    <svg class="mark" viewBox="0 0 1400 1400" aria-hidden="true" focusable="false">
+      <defs>
+        <path id="tk-t" d="M.18261719 .37304688V0H.072753909V.37304688H.025878907V.47558595H.072753909V.64990237H.18261719V.47558595H.2680664V.37304688H.18261719Z"/>
+        <path id="tk-k" d="M.17919922 .82470706V.32177735L.33398438 .47558595H.4814453L.27490235 .2758789 .49658204 0H.3540039L.19677735 .2006836 .17919922 .18310547V0H.06933594V.82470706H.17919922Z"/>
+      </defs>
+      <use href="#tk-t" transform="matrix(1125.5385,0,0,-1125.5385,273.832,1048.8858)" fill="currentColor"/>
+      <use href="#tk-k" transform="matrix(1125.5385,0,0,-1125.5385,581.104,1048.8858)" fill="currentColor"/>
+      <path transform="matrix(1,0,0,-1,1304.9024,699.9996)" stroke-width="60" fill="none" stroke="var(--accent)" d="M0 0C0-334.079-270.824-604.903-604.902-604.903-938.98-604.903-1209.805-334.079-1209.805 0-1209.805 334.078-938.98 604.902-604.902 604.902-270.824 604.902 0 334.078 0 0Z"/>
+    </svg>
+    <span class="bar__title">DiGiCo Knowledge</span>
+  </a>
+  <nav class="bar__nav" aria-label="Sections">
+    <a href="#reader">Reader</a>
+    <a href="#libraries">Libraries</a>
+    <a href="https://github.com/tkaudioservices/digico-knowledge/tree/main/format/ses" rel="noopener">Format</a>
+    <a href="https://github.com/tkaudioservices/digico-knowledge/tree/main/protocols" rel="noopener">Protocols</a>
+  </nav>
+  <a class="bar__by" href="https://tkaudioservices.com" rel="noopener">
+    <span class="bylabel">Made by</span> tk Audio Services
+  </a>
+</header>
+
+<main class="wrap">
+
+  <section class="hero" id="reader">
+    <p class="kick">DiGiCo SD-series · session files</p>
+    <h1>Read a <span class="mono">.ses</span> without the console.</h1>
+    <p class="lede">Drop a session file here and see what it holds. The file is read in your
+      browser and goes nowhere: there is no server, nothing is uploaded, nothing is kept.</p>
+
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Drop a .ses file or press to choose one">
+      <div class="drop__inner">
+        <svg class="drop__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p class="drop__title">Drop a <span class="mono">.ses</span> file</p>
+        <p class="drop__sub">or <button type="button" class="linkish" id="pick">choose one</button> · any file works, the scan is format-agnostic</p>
+        <input type="file" id="file" hidden>
+      </div>
+    </div>
+    <p class="fine" id="status" role="status" aria-live="polite"></p>
+  </section>
+
+  <section class="results" id="results" hidden>
+    <div class="results__head">
+      <div>
+        <p class="kick">File</p>
+        <h2 id="r-name" class="filename">—</h2>
+      </div>
+      <button type="button" class="btn ghost" id="clear">Clear</button>
+    </div>
+
+    <div class="tiles" id="tiles">
+      <div class="tile"><span class="tile__k">Size</span><span class="tile__v" id="t-size">—</span></div>
+      <div class="tile"><span class="tile__k">Names (length-prefixed)</span><span class="tile__v" id="t-pascal">—</span></div>
+      <div class="tile"><span class="tile__k">Printable runs</span><span class="tile__v" id="t-runs">—</span></div>
+      <div class="tile"><span class="tile__k">Candidate stamps</span><span class="tile__v" id="t-dates">—</span></div>
+      <div class="tile"><span class="tile__k">Zero bytes</span><span class="tile__v" id="t-zeros">—</span></div>
+      <div class="tile tile--wide"><span class="tile__k">SHA-256</span><span class="tile__v mono small" id="t-sha">—</span></div>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Views">
+      <button role="tab" aria-selected="true" aria-controls="p-overview" id="tab-overview" data-tab="overview">Overview</button>
+      <button role="tab" aria-selected="false" aria-controls="p-strings" id="tab-strings" data-tab="strings">Strings</button>
+      <button role="tab" aria-selected="false" aria-controls="p-dates" id="tab-dates" data-tab="dates">Timestamps</button>
+      <button role="tab" aria-selected="false" aria-controls="p-hex" id="tab-hex" data-tab="hex">Hex</button>
+      <button role="tab" aria-selected="false" aria-controls="p-structure" id="tab-structure" data-tab="structure">Structure</button>
+      <button role="tab" aria-selected="false" aria-controls="p-export" id="tab-export" data-tab="export">Export</button>
+    </div>
+
+    <div class="panel" id="p-overview" role="tabpanel" aria-labelledby="tab-overview">
+      <div class="two">
+        <div>
+          <h3>First bytes</h3>
+          <pre class="codeblock" id="o-head"></pre>
+          <p class="muted small">Session files are plain binary with no container. Whatever sits in the first bytes is the
+            best signature we have until the header page in <code>format/ses/</code> is written.</p>
+        </div>
+        <div>
+          <h3>Likely names</h3>
+          <p class="muted small">The most frequent length-prefixed strings. In a Delphi-style file these are how channel,
+            bus, snapshot and socket names are stored, so repeats usually mean something real.</p>
+          <ol class="chips" id="o-names"></ol>
+        </div>
+      </div>
+      <div class="note">
+        <strong>Heuristic.</strong> Everything on this page is recovered by pattern, not by a confirmed format map.
+        What is confirmed, and how confident each claim is, lives in
+        <a href="https://github.com/tkaudioservices/digico-knowledge/blob/main/format/ses/README.md" rel="noopener">format/ses</a>.
+      </div>
+    </div>
+
+    <div class="panel" id="p-strings" role="tabpanel" aria-labelledby="tab-strings" hidden>
+      <div class="toolbar">
+        <label>Source
+          <select id="s-group">
+            <option value="pascal8">Length-prefixed, 8-bit</option>
+            <option value="pascal32">Length-prefixed, 32-bit</option>
+            <option value="runs">Printable runs</option>
+            <option value="utf16">UTF-16</option>
+          </select>
+        </label>
+        <label class="grow">Filter <input type="search" id="s-filter" placeholder="type to filter"></label>
+        <label class="check"><input type="checkbox" id="s-unique"> unique only</label>
+        <span class="muted small" id="s-count"></span>
+      </div>
+      <div class="tablewrap">
+        <table class="data" id="s-table">
+          <thead><tr><th>Offset</th><th>Len</th><th>Text</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="muted small">Click a row to see it in the hex view. Showing the first 2,000 matches.</p>
+    </div>
+
+    <div class="panel" id="p-dates" role="tabpanel" aria-labelledby="tab-dates" hidden>
+      <p class="muted small">Doubles that read as a Delphi <code>TDateTime</code> (days since 30 Dec 1899) between 2005 and 2039
+        with a time of day. Snapshot save times are stored this way. Expect a few false hits.</p>
+      <div class="tablewrap">
+        <table class="data" id="d-table">
+          <thead><tr><th>Offset</th><th>UTC</th><th>Raw</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel" id="p-hex" role="tabpanel" aria-labelledby="tab-hex" hidden>
+      <div id="hex"></div>
+    </div>
+
+    <div class="panel" id="p-structure" role="tabpanel" aria-labelledby="tab-structure" hidden>
+      <pre class="codeblock" id="st-json"></pre>
+      <p class="muted small">This tab renders whatever <code>decode()</code> in <code>web/js/ses.js</code> returns. It grows as
+        the section map is confirmed: offset table, component records, live state, snapshots, banks, macros, patch.</p>
+    </div>
+
+    <div class="panel" id="p-export" role="tabpanel" aria-labelledby="tab-export" hidden>
+      <div class="actions">
+        <button type="button" class="btn" id="x-json">Download scan as JSON</button>
+        <button type="button" class="btn ghost" id="x-strings">Download strings as text</button>
+      </div>
+      <div class="note">
+        <strong>Before you share an export:</strong> it contains every name in the file. Read it. Show, venue and
+        people's names should be scrubbed before anything goes into a public place, including this project's
+        <code>samples/</code> folder.
+      </div>
+    </div>
+  </section>
+
+  <section class="libraries" id="libraries">
+    <p class="kick">Libraries</p>
+    <h2>Things pulled out of files.</h2>
+    <p class="lede">Macro sets, bank layouts, channel templates and naming lists, extracted from real sessions and
+      scrubbed. Stored as JSON in the repository and listed here.</p>
+    <div class="cards" id="lib-cards"><p class="muted">Loading…</p></div>
+  </section>
+
+  <section class="about">
+    <div class="two">
+      <div>
+        <p class="kick">What this is</p>
+        <h3>A working notebook, in public.</h3>
+        <p>How DiGiCo files go together, how I like a desk set up, and the reusable bits that fall out of
+          doing both. Every claim in the notes carries how it was learnt and how sure I am. The code is
+          MIT; the opinions are mine.</p>
+      </div>
+      <div>
+        <p class="kick">Where to read</p>
+        <ul class="links">
+          <li><a href="https://github.com/tkaudioservices/digico-knowledge/blob/main/format/ses/README.md" rel="noopener">The <code>.ses</code> format map</a></li>
+          <li><a href="https://github.com/tkaudioservices/digico-knowledge/blob/main/format/ses/open-questions.md" rel="noopener">Open questions</a></li>
+          <li><a href="https://github.com/tkaudioservices/digico-knowledge/tree/main/protocols" rel="noopener">Console setup protocols</a></li>
+          <li><a href="https://github.com/tkaudioservices/digico-knowledge/blob/main/CONVENTIONS.md" rel="noopener">How facts are written</a></li>
+          <li><a href="https://github.com/tkaudioservices/digico-knowledge" rel="noopener">The repository</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__inner">
+    <a href="https://tkaudioservices.com" rel="noopener"><img src="assets/tk-audio-lockup-light.svg" alt="tk Audio Services" class="foot__logo" width="788" height="192"></a>
+    <p>Audio system design, engineering and programming for productions where it has to work.
+      Based in the UK, working wherever the show is.</p>
+    <p class="foot__fine">© 2026 tk Audio Services Ltd · DiGiCo and SD-series are trademarks of DiGiCo (UK) Ltd; this
+      project is independent and not affiliated. · <a href="https://github.com/tkaudioservices/digico-knowledge/blob/main/LICENSE" rel="noopener">MIT</a></p>
+  </div>
+</footer>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

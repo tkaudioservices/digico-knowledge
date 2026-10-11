@@ -1,0 +1,15 @@
+{
+  "id": "example-macro-set",
+  "kind": "macros",
+  "title": "Example macro set",
+  "console": "SD5",
+  "version": "unknown",
+  "source": "hand-written placeholder, not from a file",
+  "extracted": "2026-10",
+  "notes": "Shows the shape only. Real libraries come from scrubbed extractions.",
+  "items": [
+    { "name": "Talk to Stage", "colour": "green", "actions": ["Talkback to Stage on while held"] },
+    { "name": "Mute All Mics", "colour": "red", "actions": ["Mute group 1 on"] },
+    { "name": "Record Arm", "colour": "yellow", "actions": ["Record outputs unmute"] }
+  ]
+}
