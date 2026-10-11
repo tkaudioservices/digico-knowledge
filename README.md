@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="web/assets/tk-audio-lockup.svg" alt="tk Audio Services" width="420">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="web/assets/tk-audio-lockup-light.svg">
+    <img src="web/assets/tk-audio-lockup.svg" alt="tk Audio Services" width="420">
+  </picture>
 </p>
 
 # DiGiCo Knowledge
